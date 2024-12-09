@@ -1,15 +1,31 @@
 package ModelLayer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class User {
     @Id
-    public int ID ;
-    public String UserName ;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int ID ;
+    private String UserName ;
+    private String Email;
+    private String Password ;
+    @Enumerated(EnumType.STRING)
 
-    public int Password ;
-    public String Role ;
+    private Role role ;
 
+    public void setUserName(String userName){
+        this.UserName = userName  ;
+
+    }
+    public void setEmail(String Email){
+        this.Email = Email ;
+    }
+
+    public void setPassword(String Password){
+        this.Password = Password ;
+    }
+    public void setRole(Role role){
+        this.role = role;
+    }
 }
