@@ -1,8 +1,7 @@
-package ControllerLayer;
+package com.LMS.LMS.ControllerLayer;
 
-import DTO.UserRegistration;
-import ServiceLayer.UserService;
-import jakarta.persistence.Entity;
+import com.LMS.LMS.DTO.UserRegistration;
+import com.LMS.LMS.ServiceLayer.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

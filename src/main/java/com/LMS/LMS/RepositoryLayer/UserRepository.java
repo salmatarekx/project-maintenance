@@ -1,6 +1,6 @@
-package RepositoryLayer;
+package com.LMS.LMS.RepositoryLayer;
 
-import ModelLayer.User;
+import com.LMS.LMS.ModelLayer.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User , Long> {

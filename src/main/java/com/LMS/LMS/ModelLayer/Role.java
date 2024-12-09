@@ -1,4 +1,4 @@
-package ModelLayer;
+package com.LMS.LMS.ModelLayer;
 
 public enum Role {
 

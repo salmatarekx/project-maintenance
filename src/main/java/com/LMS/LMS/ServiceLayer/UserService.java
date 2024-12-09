@@ -1,9 +1,8 @@
-package ServiceLayer;
+package com.LMS.LMS.ServiceLayer;
 
-import DTO.UserRegistration;
-import ModelLayer.User;
-import RepositoryLayer.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.LMS.LMS.DTO.UserRegistration;
+import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.stereotype.Service;
 
 

@@ -1,4 +1,4 @@
-package ModelLayer;
+package com.LMS.LMS.ModelLayer;
 
 import jakarta.persistence.*;
 

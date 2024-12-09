@@ -1,6 +1,6 @@
-package DTO;
+package com.LMS.LMS.DTO;
 
-import ModelLayer.Role;
+import com.LMS.LMS.ModelLayer.Role;
 
 public class UserRegistration {
     private String username;
