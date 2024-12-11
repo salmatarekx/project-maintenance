@@ -1,6 +1,6 @@
-package RepositoryLayer;
+package com.LMS.LMS.RepositoryLayer;
 
-import ModelLayer.Course;
+import com.LMS.LMS.ModelLayer.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CourseRepository extends JpaRepository<Course, Integer> {

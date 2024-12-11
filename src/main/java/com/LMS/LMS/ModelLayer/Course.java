@@ -1,5 +1,6 @@
-package ModelLayer;
+package com.LMS.LMS.ModelLayer;
 
+import com.LMS.LMS.ModelLayer.User;
 import jakarta.persistence.*;
 import java.util.List;
 
