@@ -1,7 +1,7 @@
 package com.LMS.LMS.ControllerLayer;
-
 import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
+import com.LMS.LMS.ModelLayer.Lesson;
 import com.LMS.LMS.ServiceLayer.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,4 +41,17 @@ public class CourseController {
         courseService.deleteCourse(id);
         return ResponseEntity.ok("Course deleted successfully.");
     }
+    @PostMapping("/{courseId}/lessons")
+    public ResponseEntity<String> addLesson(@PathVariable int courseId, @RequestBody Lesson lesson) {
+        courseService.addLessonToCourse(courseId, lesson);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Lesson added successfully.");
+    }
+    @GetMapping("/{courseId}/lessons")
+    public ResponseEntity<List<Lesson>> getLessonsByCourse(@PathVariable int courseId) {
+        Course course = courseService.getCourseById(courseId);
+        return ResponseEntity.ok(course.getLessons());
+    }
+
+
 }
+

@@ -17,6 +17,17 @@ public class Course {
     @ElementCollection
     private List<String> mediaFiles; // URLs or paths to course materials
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> lessons;
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
