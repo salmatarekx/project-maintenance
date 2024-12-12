@@ -15,11 +15,13 @@ public class AdminCourseController {
     public AdminCourseController(AdminCourseService adminCourseService) {
         this.adminCourseService = adminCourseService;
     }
+    @PostMapping("CreateCourse")
     public ResponseEntity<String>CreateCourse(@RequestBody CourseDTO courseDTO , User curren){
         adminCourseService.createCourse(courseDTO , curren) ;
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
     }
-    public ResponseEntity<String>DeleteCourse(@PathVariable int CourseId , User currentUser){
+    @DeleteMapping("DeleteCourse/{CourseId}")
+    public ResponseEntity<String>DeleteCourse(@PathVariable int CourseId , @RequestAttribute User currentUser){
         adminCourseService.deleteCourse(CourseId , currentUser);
         return ResponseEntity.ok("Course Deleted successfully");
     }

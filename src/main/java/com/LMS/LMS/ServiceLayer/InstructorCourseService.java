@@ -23,12 +23,17 @@ public class InstructorCourseService {
     public Course CreateCourse(CourseDTO courseDTO , User user){
        return courseService.createCourse(courseDTO, user) ;
     }
-    public void removeStudentfromCourse(int Courseid , Long StudenId){
-        Course course = courseRepository.findById(Courseid).orElse(null);
-        User student = userRepository.findById(StudenId).orElse(null);
-        if (course != null && student != null){
-            List<User>Students = course.getStudents() ;
+    public void removeStudentfromCourse(int courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        User student = userRepository.findById(studentId).orElse(null);
 
+        if (course != null && student != null) {
+            List<User> students = course.getStudents();
+
+            students.removeIf(s -> s.getID() == studentId.intValue());
+
+            courseRepository.save(course);
         }
     }
+
 }

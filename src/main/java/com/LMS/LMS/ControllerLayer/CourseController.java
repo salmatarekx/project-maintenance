@@ -21,7 +21,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping
+    @PostMapping("CreateCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
         courseService.createCourse(courseDTO, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
