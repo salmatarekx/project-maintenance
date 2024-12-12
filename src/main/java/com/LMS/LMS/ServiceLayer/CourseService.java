@@ -1,13 +1,14 @@
-package ServiceLayer;
+package com.LMS.LMS.ServiceLayer;
 
-import DTO.CourseDTO;
-import ModelLayer.Course;
-import ModelLayer.User;
-import RepositoryLayer.CourseRepository;
-import RepositoryLayer.UserRepository;
+import com.LMS.LMS.DTO.CourseDTO;
+import com.LMS.LMS.ModelLayer.Course;
+import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.RepositoryLayer.CourseRepository;
+import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,24 +22,26 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-    public Course createCourse(CourseDTO courseDTO) {
-        // Find the instructor from the database
-        User instructor = userRepository.findById((long) courseDTO.getInstructor().getID())
-                .orElseThrow(() -> new RuntimeException("Instructor not found"));
-
-        // Create a new course entity
-        Course course = new Course();
-        course.setTitle(courseDTO.getTitle());
-        course.setDescription(courseDTO.getDescription());
-        course.setDuration(courseDTO.getDuration());
-        course.setMediaFiles(courseDTO.getMediaFiles());
-        course.setInstructor(instructor);
-
-        return courseRepository.save(course);
-    }
+//    public Course createCourse(CourseDTO courseDTO) {
+//        // Find the instructor from the database
+//        User instructor = userRepository.findById((long) courseDTO.getInstructor().getID())
+//                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+//
+//        // Create a new course entity
+//        Course course = new Course();
+//        course.setTitle(courseDTO.getTitle());
+//        course.setDescription(courseDTO.getDescription());
+//        course.setDuration(courseDTO.getDuration());
+//        course.setMediaFiles(courseDTO.getMediaFiles());
+//        course.setInstructor(instructor);
+//
+//        return courseRepository.save(course);
+//    }
 
     public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+        List<Course> courses = new ArrayList<>();
+        courses = courseRepository.findAll();
+        return courses;
     }
 
     public Course getCourseById(int id) {

@@ -1,8 +1,8 @@
-package ControllerLayer;
+package com.LMS.LMS.ControllerLayer;
 
-import DTO.CourseDTO;
-import ModelLayer.Course;
-import ServiceLayer.CourseService;
+import com.LMS.LMS.DTO.CourseDTO;
+import com.LMS.LMS.ModelLayer.Course;
+import com.LMS.LMS.ServiceLayer.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,23 +13,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/Courses")
 public class CourseController {
-    private final CourseService courseService;
+
 
     @Autowired
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
-    }
+    private  CourseService courseService;
 
-    @PostMapping
-    public ResponseEntity<String> createCourse(@RequestBody CourseDTO courseDTO) {
-        courseService.createCourse(courseDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
-    }
+
+
+//    @PostMapping
+//    public ResponseEntity<String> createCourse(@RequestBody CourseDTO courseDTO) {
+//        courseService.createCourse(courseDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
+//    }
+
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity getAllCourses() {
+
         return ResponseEntity.ok(courseService.getAllCourses());
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable int id) {

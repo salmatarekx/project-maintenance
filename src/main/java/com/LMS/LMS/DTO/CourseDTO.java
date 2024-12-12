@@ -1,6 +1,6 @@
-package DTO;
-import ModelLayer.User;
+package com.LMS.LMS.DTO;
 
+import com.LMS.LMS.ModelLayer.User;
 import java.util.List;
 
 public class CourseDTO {
