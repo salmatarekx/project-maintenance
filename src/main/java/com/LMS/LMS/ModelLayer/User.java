@@ -27,6 +27,9 @@ public class User {
     public void setPassword(String Password){
         this.Password = Password ;
     }
+    public String getPassword(){
+        return Password ;
+    }
     public void setRole(Role role){
         this.role = role;
     }
