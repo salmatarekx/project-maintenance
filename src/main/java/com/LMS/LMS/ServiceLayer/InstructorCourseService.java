@@ -7,6 +7,8 @@ import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InstructorCourseService {
     private final CourseService courseService ;
@@ -25,6 +27,7 @@ public class InstructorCourseService {
         Course course = courseRepository.findById(Courseid).orElse(null);
         User student = userRepository.findById(StudenId).orElse(null);
         if (course != null && student != null){
+            List<User>Students = course.getStudents() ;
 
         }
     }
