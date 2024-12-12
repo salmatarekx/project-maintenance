@@ -1,7 +1,8 @@
 package com.LMS.LMS.ModelLayer;
 
-import com.LMS.LMS.ModelLayer.User;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,21 +18,17 @@ public class Course {
     @ElementCollection
     private List<String> mediaFiles; // URLs or paths to course materials
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Lesson> lessons;
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
-
-    @ManyToOne
+    @ManyToMany
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<User> students = new ArrayList<>();@ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -55,7 +52,6 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-
     public String getDuration() {
         return duration;
     }
@@ -72,10 +68,17 @@ public class Course {
         this.mediaFiles = mediaFiles;
     }
 
+    public List<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
+    }
+
     public User getInstructor() {
         return instructor;
     }
-
     public void setInstructor(User instructor) {
         this.instructor = instructor;
     }
