@@ -18,8 +18,8 @@ public class InstructorCourseService {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
     }
-    public Course CreateCourse(CourseDTO courseDTO){
-       return courseService.createCourse(courseDTO) ;
+    public Course CreateCourse(CourseDTO courseDTO , User user){
+       return courseService.createCourse(courseDTO, user) ;
     }
     public void removeStudentfromCourse(int Courseid , Long StudenId){
         Course course = courseRepository.findById(Courseid).orElse(null);

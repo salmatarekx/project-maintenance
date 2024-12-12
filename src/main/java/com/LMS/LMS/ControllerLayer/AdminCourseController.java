@@ -1,6 +1,7 @@
 package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.DTO.CourseDTO;
+import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ServiceLayer.AdminCourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,12 @@ public class AdminCourseController {
     public AdminCourseController(AdminCourseService adminCourseService) {
         this.adminCourseService = adminCourseService;
     }
-    public ResponseEntity<String>CreateCourse(@RequestBody CourseDTO courseDTO){
-        adminCourseService.CreateCourse(courseDTO);
+    public ResponseEntity<String>CreateCourse(@RequestBody CourseDTO courseDTO , User curren){
+        adminCourseService.createCourse(courseDTO , curren) ;
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
     }
-    public ResponseEntity<String>DeleteCourse(@PathVariable int CourseId){
-        adminCourseService.DeleteCourse(CourseId);
-        return ResponseEntity.ok("Course deleted successfully.");
-
-
+    public ResponseEntity<String>DeleteCourse(@PathVariable int CourseId , User currentUser){
+        adminCourseService.deleteCourse(CourseId , currentUser);
+        return ResponseEntity.ok("Course Deleted successfully");
     }
 }

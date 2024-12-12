@@ -27,7 +27,6 @@ public class CourseDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-
     public String getDuration() {
         return duration;
     }
