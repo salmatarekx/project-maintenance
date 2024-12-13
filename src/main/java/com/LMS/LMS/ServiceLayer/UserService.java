@@ -5,7 +5,7 @@ import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class UserService {
 
 
     private final BCryptPasswordEncoder passwordEncoder;
-
+    @Autowired
     public UserService(@Lazy UserRepository userRepository,@Lazy BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -41,7 +41,7 @@ public class UserService {
         User user = new User();
         user.setUserName(userReq.getUsername());
         user.setEmail(userReq.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(userReq.getPassword()));  // You may want to encode the password here
+        user.setPassword(new BCryptPasswordEncoder().encode(userReq.getPassword()));
         user.setRole(userReq.getRole());
 
         return userRepository.save(user);

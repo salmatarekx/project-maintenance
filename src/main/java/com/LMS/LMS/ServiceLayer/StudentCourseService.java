@@ -20,18 +20,7 @@ public class StudentCourseService {
     public void AccessCourseMaterials(){
         // menna
     }
-    public void TakeQuiz(){
-        // Taha
-    }
-    public void HandInAssignment(){
-        //Taha
-    }
-    public void ViewAssignmentGrades(int courseId , Long StudentId){
 
-    }
-    public void ViewQuizGrades(int courseId , Long studentId){
-
-    }
 
 
 
