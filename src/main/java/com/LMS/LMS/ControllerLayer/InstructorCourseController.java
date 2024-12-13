@@ -9,6 +9,7 @@ import com.LMS.LMS.ServiceLayer.InstructorCourseService;
 import com.LMS.LMS.ServiceLayer.TrackingPerformanceService;
 import com.LMS.LMS.ServiceLayer.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/InstructorCourse")
 public class InstructorCourseController {
-    @Autowired
-    private  InstructorCourseService instructorCourseService;
-    @Autowired
-    private  UserService userService;
-    @Autowired
-    private  CourseService courseService;
+    private final InstructorCourseService instructorCourseService;
+    private  final UserService userService;
+    private final CourseService courseService;
+
+    public InstructorCourseController(@Lazy InstructorCourseService instructorCourseService, @Lazy UserService userService,@Lazy CourseService courseService) {
+        this.instructorCourseService = instructorCourseService;
+        this.userService = userService;
+        this.courseService = courseService;
+    }
 
 
     @PostMapping

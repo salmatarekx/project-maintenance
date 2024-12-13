@@ -5,6 +5,7 @@ import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ServiceLayer.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(@Lazy CourseService courseService) {
         this.courseService = courseService;
     }
 

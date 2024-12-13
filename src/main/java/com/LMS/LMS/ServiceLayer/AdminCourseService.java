@@ -4,14 +4,16 @@ import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdminCourseService {
     private final CourseService courseService;
 
-
-    public AdminCourseService(CourseService courseService) {
+    @Autowired
+    public AdminCourseService(@Lazy CourseService courseService) {
         this.courseService = courseService;
     }
 

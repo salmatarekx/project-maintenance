@@ -5,6 +5,7 @@ import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class InstructorCourseService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository ;
 
-    public InstructorCourseService(CourseService courseService, UserRepository userRepository, CourseRepository courseRepository) {
+    public InstructorCourseService(@Lazy CourseService courseService, @Lazy UserRepository userRepository, @Lazy CourseRepository courseRepository) {
         this.courseService = courseService;
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;

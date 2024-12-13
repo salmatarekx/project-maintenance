@@ -6,6 +6,7 @@ import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private  UserRepository userRepository;
-    @Autowired
+    private final UserRepository userRepository;
 
-    private BCryptPasswordEncoder passwordEncoder;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserService(@Lazy UserRepository userRepository,@Lazy BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     public Optional<User> getUserById(Long id) {

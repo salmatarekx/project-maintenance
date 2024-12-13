@@ -9,7 +9,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID ;
     private String UserName ;
-    @Column(nullable = false, unique = true)
+    @Column(name = "Email")
     private String Email;
     private String Password ;
     @Enumerated(EnumType.STRING)

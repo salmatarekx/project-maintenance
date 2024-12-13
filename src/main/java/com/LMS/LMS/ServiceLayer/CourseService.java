@@ -5,6 +5,7 @@ import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class CourseService {
     private final UserRepository userRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository) {
+    public CourseService(@Lazy CourseRepository courseRepository,@Lazy UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
     }

@@ -15,8 +15,8 @@ public class Course {
     private String description;
     private String duration;
 
-//    @ElementCollection
-//    private List<String> mediaFiles; // URLs or paths to course materials
+    @ElementCollection
+    private List<String> mediaFiles; // URLs or paths to course materials
 
     @ManyToMany
     @JoinTable(
@@ -60,13 +60,13 @@ public class Course {
         this.duration = duration;
     }
 
-//    public List<String> getMediaFiles() {
-//        return mediaFiles;
-//    }
-//
-//    public void setMediaFiles(List<String> mediaFiles) {
-//        this.mediaFiles = mediaFiles;
-//    }
+    public List<String> getMediaFiles() {
+        return mediaFiles;
+    }
+
+    public void setMediaFiles(List<String> mediaFiles) {
+        this.mediaFiles = mediaFiles;
+    }
 
     public List<User> getStudents() {
         return students;

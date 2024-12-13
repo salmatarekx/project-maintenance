@@ -17,11 +17,11 @@ public class AdminUserController {
     @Autowired
     private  AdminUserService adminUserService ;
 
-//   @PostMapping("/CreateUser")
-//    public ResponseEntity<String> CreateUser(@RequestBody UserRegistration userRegistration){
-//
-//          adminUserService.CreateUser(userRegistration);
-//          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created"+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
-//
-//    }
+   @PostMapping("/CreateUser")
+    public ResponseEntity<String> CreateUser(@RequestBody UserRegistration userRegistration){
+
+          adminUserService.CreateUser(userRegistration);
+          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created"+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
+
+    }
 }
