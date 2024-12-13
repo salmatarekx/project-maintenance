@@ -15,24 +15,20 @@ public class Course {
     private String description;
     private String duration;
 
+    @ElementCollection
+    private List<String> mediaFiles; // URLs or paths to course materials
 
-
-//    @ElementCollection
-//    private List<String> mediaFiles; // URLs or paths to course materials
-
-    @ManyToOne
+    @ManyToMany
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<User> students = new ArrayList<>();@ManyToOne
+    @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
-    @OneToMany
-    private List<Lesson> lessons = new ArrayList<>();
-
-    @OneToMany
-    private List<Quiz> quizzes = new ArrayList<>();
-
-    @OneToMany
-    private List<Assignment> assignments = new ArrayList<>();
-
-    @JoinColumn(name = "instructor_id", nullable = false)
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -56,7 +52,6 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-
     public String getDuration() {
         return duration;
     }
@@ -65,43 +60,26 @@ public class Course {
         this.duration = duration;
     }
 
-//    public List<String> getMediaFiles() {
-//        return mediaFiles;
-//    }
-//
-//    public void setMediaFiles(List<String> mediaFiles) {
-//        this.mediaFiles = mediaFiles;
-//    }
+    public List<String> getMediaFiles() {
+        return mediaFiles;
+    }
+
+    public void setMediaFiles(List<String> mediaFiles) {
+        this.mediaFiles = mediaFiles;
+    }
+
+    public List<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
+    }
 
     public User getInstructor() {
         return instructor;
     }
-
     public void setInstructor(User instructor) {
         this.instructor = instructor;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
-
-    public List<Quiz> getQuizzes() {
-        return quizzes;
-    }
-
-    public void setQuizzes(List<Quiz> quizzes) {
-        this.quizzes = quizzes;
-    }
-
-    public List<Assignment> getAssignments() {
-        return assignments;
-    }
-
-    public void setAssignments(List<Assignment> assignments) {
-        this.assignments = assignments;
     }
 }

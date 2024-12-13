@@ -1,5 +1,4 @@
 package com.LMS.LMS.ServiceLayer;
-
 import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
@@ -8,7 +7,6 @@ import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,26 +20,27 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-//    public Course createCourse(CourseDTO courseDTO) {
-//        // Find the instructor from the database
-//        User instructor = userRepository.findById((long) courseDTO.getInstructor().getID())
-//                .orElseThrow(() -> new RuntimeException("Instructor not found"));
-//
-//        // Create a new course entity
-//        Course course = new Course();
-//        course.setTitle(courseDTO.getTitle());
-//        course.setDescription(courseDTO.getDescription());
-//        course.setDuration(courseDTO.getDuration());
-//        course.setMediaFiles(courseDTO.getMediaFiles());
-//        course.setInstructor(instructor);
-//
-//        return courseRepository.save(course);
-//    }
+    public Course createCourse(CourseDTO courseDTO, User currentUser) {
+        if (currentUser.getRole().equals("Student")) {
+            throw new RuntimeException("You do not have permission to create a course");
+        }
+        User instructor;
+            instructor = userRepository.findById((long) courseDTO.getInstructor().getID())
+                    .orElseThrow(() -> new RuntimeException("Instructor not found"));
+
+        Course course = new Course();
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setDuration(courseDTO.getDuration());
+        course.setMediaFiles(courseDTO.getMediaFiles());
+        course.setInstructor(instructor);
+
+        return courseRepository.save(course);
+    }
+
 
     public List<Course> getAllCourses() {
-        List<Course> courses = new ArrayList<>();
-        courses = courseRepository.findAll();
-        return courses;
+        return courseRepository.findAll();
     }
 
     public Course getCourseById(int id) {
@@ -49,7 +48,50 @@ public class CourseService {
                 .orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
-    public void deleteCourse(int id) {
+    public Course updateCourse(int id, CourseDTO courseDTO, User currentUser) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        if (currentUser.getRole().equals("Student")) {
+            throw new RuntimeException("You do not have permission to update this course");
+        }
+
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setDuration(courseDTO.getDuration());
+        course.setMediaFiles(courseDTO.getMediaFiles());
+
+        return courseRepository.save(course);
+    }
+
+    public void deleteCourse(int id, User currentUser) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        if (currentUser.getRole().equals("Student")) {
+            throw new RuntimeException("You do not have permission to delete this course");
+        }
+
         courseRepository.deleteById(id);
     }
+
+    public void enrollStudent(int courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        course.getStudents().add(student);
+        courseRepository.save(course);
+    }
+
+    public List<User> getEnrolledStudents(int courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        return course.getStudents();
+    }
 }
+
+

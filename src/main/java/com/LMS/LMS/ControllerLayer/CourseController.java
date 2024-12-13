@@ -2,6 +2,7 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
+import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ServiceLayer.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,35 +14,49 @@ import java.util.List;
 @RestController
 @RequestMapping("/Courses")
 public class CourseController {
-
+    private final CourseService courseService;
 
     @Autowired
-    private  CourseService courseService;
-
-
-
-//    @PostMapping
-//    public ResponseEntity<String> createCourse(@RequestBody CourseDTO courseDTO) {
-//        courseService.createCourse(courseDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
-//    }
-
-
-    @GetMapping
-    public ResponseEntity getAllCourses() {
-
-        return ResponseEntity.ok(courseService.getAllCourses());
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
     }
 
+    @PostMapping("CreateCourse")
+    public ResponseEntity<String> createCourse(@RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
+        courseService.createCourse(courseDTO, currentUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Course>> getAllCourses() {
+        return ResponseEntity.ok(courseService.getAllCourses());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable int id) {
         return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCourse(@PathVariable int id, @RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
+        courseService.updateCourse(id, courseDTO, currentUser);
+        return ResponseEntity.ok("Course updated successfully.");
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable int id) {
-        courseService.deleteCourse(id);
+    public ResponseEntity<String> deleteCourse(@PathVariable int id, @RequestAttribute User currentUser) {
+        courseService.deleteCourse(id, currentUser);
         return ResponseEntity.ok("Course deleted successfully.");
+    }
+
+    @PostMapping("/{courseId}/enroll")
+    public ResponseEntity<String> enrollStudent(@PathVariable int courseId, @RequestParam Long studentId) {
+        courseService.enrollStudent(courseId, studentId);
+        return ResponseEntity.ok("Student enrolled successfully.");
+    }
+
+    @GetMapping("/{courseId}/students")
+    public ResponseEntity<List<User>> getEnrolledStudents(@PathVariable int courseId) {
+        return ResponseEntity.ok(courseService.getEnrolledStudents(courseId));
     }
 }

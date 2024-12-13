@@ -1,33 +1,55 @@
 package com.LMS.LMS.ModelLayer;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String topic;
+    private int id;
+    private String title;
+//    private String content;
+//    private String duration;
 
     @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    public Integer getId() {
+    @ElementCollection
+    private List<String> attendanceCodes; // OTPs for attendance
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+//    public String getContent() {
+//        return content;
+//    }
+//
+//    public void setContent(String content) {
+//        this.content = content;
+//    }
+
+//    public String getDuration() {
+//        return duration;
+//    }
+//
+//    public void setDuration(String duration) {
+//        this.duration = duration;
+//    }
 
     public Course getCourse() {
         return course;
@@ -37,12 +59,11 @@ public class Lesson {
         this.course = course;
     }
 
-    public Lesson(Integer id, String topic, Course course) {
-        this.id = id;
-        this.topic = topic;
-        this.course = course;
+    public List<String> getAttendanceCodes() {
+        return attendanceCodes;
     }
 
-    public Lesson() {
+    public void setAttendanceCodes(List<String> attendanceCodes) {
+        this.attendanceCodes = attendanceCodes;
     }
 }

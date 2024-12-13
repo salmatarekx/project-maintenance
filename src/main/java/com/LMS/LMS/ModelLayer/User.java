@@ -21,11 +21,19 @@ public class User {
     public void setEmail(String Email){
         this.Email = Email ;
     }
-
+    public int getID() {
+        return ID;
+     }
     public void setPassword(String Password){
         this.Password = Password ;
     }
+    public String getPassword(){
+        return Password ;
+    }
     public void setRole(Role role){
         this.role = role;
+    }
+    public Role getRole(){
+        return role;
     }
 }
