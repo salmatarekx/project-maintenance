@@ -14,17 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminUserController {
 
 
-    private final AdminUserService adminUserService ;
-
     @Autowired
-    public AdminUserController(AdminUserService adminUserService){
-        this.adminUserService = adminUserService ;
-    }
-   @PostMapping("/CreateUser")
-    public ResponseEntity<String> CreateUser(@RequestBody UserRegistration userRegistration){
+    private  AdminUserService adminUserService ;
 
-          adminUserService.CreateUser(userRegistration);
-          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created"+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
-
-    }
+//   @PostMapping("/CreateUser")
+//    public ResponseEntity<String> CreateUser(@RequestBody UserRegistration userRegistration){
+//
+//          adminUserService.CreateUser(userRegistration);
+//          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created"+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
+//
+//    }
 }

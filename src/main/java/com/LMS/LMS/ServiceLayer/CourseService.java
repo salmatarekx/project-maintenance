@@ -32,7 +32,7 @@ public class CourseService {
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
         course.setDuration(courseDTO.getDuration());
-        course.setMediaFiles(courseDTO.getMediaFiles());
+//        course.setMediaFiles(courseDTO.getMediaFiles());
         course.setInstructor(instructor);
 
         return courseRepository.save(course);
@@ -59,7 +59,7 @@ public class CourseService {
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
         course.setDuration(courseDTO.getDuration());
-        course.setMediaFiles(courseDTO.getMediaFiles());
+       // course.setMediaFiles(courseDTO.getMediaFiles());
 
         return courseRepository.save(course);
     }

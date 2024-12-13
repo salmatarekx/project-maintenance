@@ -2,20 +2,31 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.DTO.UserRegistration;
+import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.ServiceLayer.CourseService;
 import com.LMS.LMS.ServiceLayer.InstructorCourseService;
+import com.LMS.LMS.ServiceLayer.TrackingPerformanceService;
+import com.LMS.LMS.ServiceLayer.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("InstructorCourse")
-public class InstructorCourseController {
-    private final InstructorCourseService instructorCourseService;
+import java.util.HashMap;
+import java.util.Map;
 
-    public InstructorCourseController(InstructorCourseService instructorCourseService) {
-        this.instructorCourseService = instructorCourseService;
-    }
+@RestController
+@RequestMapping("/InstructorCourse")
+public class InstructorCourseController {
+    @Autowired
+    private  InstructorCourseService instructorCourseService;
+    @Autowired
+    private  UserService userService;
+    @Autowired
+    private  CourseService courseService;
+
+
     @PostMapping
     public ResponseEntity<String>CreateCourse(@RequestBody  CourseDTO courseDTO, @RequestAttribute User user){
         instructorCourseService.CreateCourse(courseDTO ,user);
@@ -28,5 +39,27 @@ public class InstructorCourseController {
       instructorCourseService.removeStudentfromCourse(CourseId,StudentId);
       return ResponseEntity.ok("Student removed successfully from course.");
 
+    }
+
+    @Autowired
+    private TrackingPerformanceService performanceTrackingService;
+
+    @GetMapping("/performance")
+    public ResponseEntity<Map<String, Object>> getStudentPerformance(
+            @RequestParam Long courseId, @RequestParam Long studentId) {
+
+
+        Course course = courseService.getAllCourses().stream()
+                .filter(c -> (c.getId() == courseId))
+                .findFirst().orElse(null);
+
+        User student = userService.getUserById(studentId).orElse(null);
+
+        if (course == null || student == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        Map<String, Object> performanceData = performanceTrackingService.getSimplifiedPerformance(student, course);
+        return ResponseEntity.ok(performanceData);
     }
 }

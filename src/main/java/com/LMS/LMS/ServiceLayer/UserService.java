@@ -4,19 +4,28 @@ import com.LMS.LMS.DTO.LoginReq;
 import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private  UserRepository userRepository;
+    @Autowired
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = encoder;
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
+
 
     public User Register(UserRegistration userReq) {
         User existedUser  = userRepository.findByEmail(userReq.getEmail()).orElse(null) ;

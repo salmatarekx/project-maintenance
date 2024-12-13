@@ -1,15 +1,17 @@
 package com.LMS.LMS.ServiceLayer;
 
 import com.LMS.LMS.ModelLayer.*;
+import com.LMS.LMS.RepositoryLayer.AssignmentGradesRepo;
 import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
 import com.LMS.LMS.RepositoryLayer.AttendanceRepo;
-import com.LMS.LMS.RepositoryLayer.QuizRepo;
+import com.LMS.LMS.RepositoryLayer.QuizGradesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,28 +21,40 @@ public class TrackingPerformanceService {
     private AttendanceRepo attendanceRepo;
 
     @Autowired
-    private QuizRepo quizRepo;
+    private QuizGradesRepo quizGradesRepo;
 
     @Autowired
-    private AssignmentRepo assignmentRepo;
+    private AssignmentGradesRepo assignmentGradesRepo;
 
 
-    public List<Attendance> getAttendanceByStudentAndCourse(User student, Course course) {
-        return attendanceRepo.findAll().stream()
+    public Map<String, Object> getSimplifiedPerformance(User student, Course course) {
+        Map<String, Object> performanceData = new HashMap<>();
+
+        // Attendance summary
+        List<Attendance> attendanceRecords = attendanceRepo.findAll().stream()
                 .filter(a -> a.getStudent().equals(student) && a.getLesson().getCourse().equals(course))
                 .collect(Collectors.toList());
-    }
+        long attendedSessions = attendanceRecords.stream().filter(Attendance::isAttend).count();
+        long totalSessions = attendanceRecords.size();
+        performanceData.put("attendance", String.format("%d/%d sessions", attendedSessions, totalSessions));
 
-
-    public List<Quiz> getQuizScoresByStudentAndCourse(User student, Course course) {
-        return quizRepo.findAll().stream()
-                .filter(qz -> qz.getStudent().equals(student) && qz.getCourse().equals(course))
+        // Quiz scores summary
+        List<Map<String, String>> quizScores = quizGradesRepo.findAll().stream()
+                .filter(qs -> qs.getStudent().equals(student) && qs.getQuiz().getCourse().equals(course))
+                .map(qs -> Map.of("quizTitle", qs.getQuiz().getTitle(), "Grades", qs.getGrades()))
                 .collect(Collectors.toList());
-    }
+        performanceData.put("quizScores", quizScores);
 
-    public List<Assignment> getAssignmentsByStudentAndCourse(User student, Course course) {
-        return assignmentRepo.findAll().stream()
-                .filter(a -> a.getStudent().equals(student) && a.getCourse().equals(course))
+        // Assignments summary
+        List<Map<String, String>> assignments = assignmentGradesRepo.findAll().stream()
+                .filter(a -> a.getStudent().equals(student) && a.getAssignment().getCourse().equals(course))
+                .map(a -> Map.of(
+                        "assignmentTitle", a.getAssignment().getTitle(),
+                        "grade", a.getGrade(),
+                        "feedback", a.getFeedback()))
                 .collect(Collectors.toList());
+        performanceData.put("assignments", assignments);
+
+        return performanceData;
     }
 }

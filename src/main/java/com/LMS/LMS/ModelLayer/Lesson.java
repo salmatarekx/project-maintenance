@@ -8,7 +8,7 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String title;
+    private String topic;
 //    private String content;
 //    private String duration;
 
@@ -16,8 +16,8 @@ public class Lesson {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @ElementCollection
-    private List<String> attendanceCodes; // OTPs for attendance
+//    @ElementCollection
+//    private List<String> attendanceCodes; // OTPs for attendance
 
     public int getId() {
         return id;
@@ -27,12 +27,12 @@ public class Lesson {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTopic(String title) {
+        this.topic = title;
     }
 
 //    public String getContent() {
@@ -58,12 +58,12 @@ public class Lesson {
     public void setCourse(Course course) {
         this.course = course;
     }
-
-    public List<String> getAttendanceCodes() {
-        return attendanceCodes;
-    }
-
-    public void setAttendanceCodes(List<String> attendanceCodes) {
-        this.attendanceCodes = attendanceCodes;
-    }
+//
+//    public List<String> getAttendanceCodes() {
+//        return attendanceCodes;
+//    }
+//
+//    public void setAttendanceCodes(List<String> attendanceCodes) {
+//        this.attendanceCodes = attendanceCodes;
+//    }
 }

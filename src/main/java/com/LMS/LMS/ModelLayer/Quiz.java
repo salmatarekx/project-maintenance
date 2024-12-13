@@ -1,6 +1,9 @@
 package com.LMS.LMS.ModelLayer;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class Quiz {
@@ -10,21 +13,17 @@ public class Quiz {
 
     private String title;
 
+
+
+
     @ManyToOne
     private Course course;
 
-    @ManyToOne
-    private User student;
+
 
     public Quiz() {
     }
 
-    public Quiz(Integer id, String title, Course course, User student) {
-        this.id = id;
-        this.title = title;
-        this.course = course;
-        this.student = student;
-    }
 
     public Integer getId() {
         return id;
@@ -50,11 +49,12 @@ public class Quiz {
         this.course = course;
     }
 
-    public User getStudent() {
-        return student;
-    }
 
-    public void setStudent(User student) {
-        this.student = student;
-    }
-}
+    public Quiz(Integer id, String title, Course course ) {
+        this.id = id;
+        this.title = title;
+        this.course = course;
+
+    }}
+
+

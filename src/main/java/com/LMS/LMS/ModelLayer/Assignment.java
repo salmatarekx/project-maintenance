@@ -12,17 +12,12 @@ public class Assignment {
     @ManyToOne
     private Course course;
 
-    @ManyToOne
-    private User student;
 
-    private String grade;
-
-    public Assignment(Integer id, String title, Course course, User student, String grade) {
+    public Assignment(Integer id, String title, Course course ) {
         this.id = id;
         this.title = title;
         this.course = course;
-        this.student = student;
-        this.grade = grade;
+
     }
 
     public Assignment() {
@@ -52,19 +47,5 @@ public class Assignment {
         this.course = course;
     }
 
-    public User getStudent() {
-        return student;
-    }
 
-    public void setStudent(User student) {
-        this.student = student;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
-    }
 }
