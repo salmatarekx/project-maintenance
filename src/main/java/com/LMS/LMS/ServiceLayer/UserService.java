@@ -55,6 +55,29 @@ public class UserService {
         }
         return user ;
     }
+    public User ViewProfile(long Id){
+        User user = userRepository.findById(Id).orElse(null);
+        if (user != null){
+            return user ;
+        }
+        else {
+            throw new RuntimeException("Profile not found!");
+        }
+    }
+    public User UpdateProfile(Long id,UserRegistration userRegistration){
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null){
+            throw new RuntimeException("Profile not found!");
+        }
+        if (userRegistration.getPassword() != null && !userRegistration.getPassword().isEmpty() && !userRegistration.getUsername().isEmpty() && userRegistration.getRole()!=null && !userRegistration.getEmail().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
+            user.setUserName(userRegistration.getUsername());
+            user.setEmail(userRegistration.getEmail());
+            user.setRole(userRegistration.getRole());
+            user.setPassword(userRegistration.getPassword());
+        }
+        return userRepository.save(user);
+    }
 
 
 
