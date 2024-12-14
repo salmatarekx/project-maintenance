@@ -41,7 +41,7 @@ public class TrackingPerformanceService {
         // Quiz scores summary
         List<Map<String, String>> quizScores = quizGradesRepo.findAll().stream()
                 .filter(qs -> qs.getStudent().equals(student) && qs.getQuiz().getCourse().equals(course))
-                .map(qs -> Map.of("quizTitle", qs.getQuiz().getTitle(), "Grades", qs.getGrades()))
+                .map(qs -> Map.of ("quizTitle", qs.getQuiz().getTitle(), "Grades", qs.getGrades()))
                 .collect(Collectors.toList());
         performanceData.put("quizScores", quizScores);
 

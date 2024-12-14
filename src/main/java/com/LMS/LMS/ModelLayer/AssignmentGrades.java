@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class AssignmentGrades {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     private User student;
@@ -23,7 +23,7 @@ public class AssignmentGrades {
     // Constructors
     public AssignmentGrades() {}
 
-    public AssignmentGrades(Integer id, User student, Assignment assignment,
+    public AssignmentGrades(Long id, User student, Assignment assignment,
                             String grade, String feedback, LocalDateTime submissionDate,
                             String submissionContent) {
         this.id = id;
@@ -38,8 +38,8 @@ public class AssignmentGrades {
     }
 
     // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public User getStudent() { return student; }
     public void setStudent(User student) { this.student = student; }
@@ -70,4 +70,5 @@ public class AssignmentGrades {
         this.isLate = submissionDate != null && assignment != null &&
                 submissionDate.isAfter(assignment.getDueDate());
     }
+
 }

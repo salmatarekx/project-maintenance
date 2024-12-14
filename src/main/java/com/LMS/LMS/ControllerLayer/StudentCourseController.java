@@ -19,7 +19,7 @@ public class StudentCourseController {
         this.studentCourseService = studentCourseService;
     }
     @PostMapping("/{StudentId}/Enorll/{CourseId}")
-    public ResponseEntity<String>Enrollment(@PathVariable int CourseId , @PathVariable Long StudentId) {
+    public ResponseEntity<String>Enrollment(@PathVariable Long CourseId , @PathVariable Long StudentId) {
         studentCourseService.Enroll(CourseId , StudentId);
         return ResponseEntity.ok("Student Enrolled in course Successfully.") ;
     }

@@ -1,32 +1,45 @@
 package com.LMS.LMS.ModelLayer;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "quiz_grades")
 public class QuizGrades {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
     @ManyToOne
+    @JoinColumn(name = "student_id")
     private User student;
 
     private String grade;
     private String feedback;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Integer attemptNumber;
-    private String answers; // Could store JSON of answers
 
-    // Constructors
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
+
+    @Column(name = "attempt_number")
+    private Long attemptNumber;
+
+    private String answers;
+
+    // Default constructor
     public QuizGrades() {}
 
-    public QuizGrades(Integer id, Quiz quiz, User student, String grade,
-                      String feedback, LocalDateTime startTime, LocalDateTime endTime,
-                      Integer attemptNumber, String answers) {
+    // Parameterized constructor
+    public QuizGrades(Long id, Quiz quiz, User student, String grade,
+                      String feedback, LocalDateTime startTime,
+                      LocalDateTime endTime, Long attemptNumber,
+                      String answers) {
         this.id = id;
         this.quiz = quiz;
         this.student = student;
@@ -39,30 +52,77 @@ public class QuizGrades {
     }
 
     // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Quiz getQuiz() { return quiz; }
-    public void setQuiz(Quiz quiz) { this.quiz = quiz; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public User getStudent() { return student; }
-    public void setStudent(User student) { this.student = student; }
+    public Quiz getQuiz() {
+        return quiz;
+    }
 
-    public String getGrade() { return grade; }
-    public void setGrade(String grade) { this.grade = grade; }
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
 
-    public String getFeedback() { return feedback; }
-    public void setFeedback(String feedback) { this.feedback = feedback; }
+    public User getStudent() {
+        return student;
+    }
 
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
+    public void setStudent(User student) {
+        this.student = student;
+    }
 
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    public String getGrades() {
+        return grade;
+    }
 
-    public Integer getAttemptNumber() { return attemptNumber; }
-    public void setAttemptNumber(Integer attemptNumber) { this.attemptNumber = attemptNumber; }
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 
-    public String getAnswers() { return answers; }
-    public void setAnswers(String answers) { this.answers = answers; }
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Long getAttemptNumber() {
+        return attemptNumber;
+    }
+
+    public void setAttemptNumber(Long attemptNumber) {
+        this.attemptNumber = attemptNumber;
+    }
+
+    public String getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(String answers) {
+        this.answers = answers;
+    }
+
+
 }

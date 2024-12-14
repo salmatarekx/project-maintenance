@@ -38,30 +38,30 @@
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<Course> getCourseById(@PathVariable int id) {
+        public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
             return ResponseEntity.ok(courseService.getCourseById(id));
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<String> updateCourse(@PathVariable int id, @RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
+        public ResponseEntity<String> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
             courseService.updateCourse(id, courseDTO, currentUser);
             return ResponseEntity.ok("Course updated successfully.");
         }
 
         @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteCourse(@PathVariable int id, @RequestAttribute User currentUser) {
+        public ResponseEntity<String> deleteCourse(@PathVariable Long id, @RequestAttribute User currentUser) {
             courseService.deleteCourse(id, currentUser);
             return ResponseEntity.ok("Course deleted successfully.");
         }
 
         @PostMapping("/{courseId}/enroll")
-        public ResponseEntity<String> enrollStudent(@PathVariable int courseId, @RequestParam Long studentId) {
+        public ResponseEntity<String> enrollStudent(@PathVariable Long courseId, @RequestParam Long studentId) {
             courseService.enrollStudent(courseId, studentId);
             return ResponseEntity.ok("Student enrolled successfully.");
         }
 
         @GetMapping("/{courseId}/students")
-        public ResponseEntity<List<User>> getEnrolledStudents(@PathVariable int courseId) {
+        public ResponseEntity<List<User>> getEnrolledStudents(@PathVariable Long courseId) {
             return ResponseEntity.ok(courseService.getEnrolledStudents(courseId));
         }
     }

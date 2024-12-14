@@ -44,12 +44,12 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Course getCourseById(int id) {
+    public Course getCourseById(Long id) {
         return courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
-    public Course updateCourse(int id, CourseDTO courseDTO, User currentUser) {
+    public Course updateCourse(Long id, CourseDTO courseDTO, User currentUser) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
@@ -65,7 +65,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public void deleteCourse(int id, User currentUser) {
+    public void deleteCourse(Long id, User currentUser) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
@@ -76,7 +76,7 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
-    public void enrollStudent(int courseId, Long studentId) {
+    public void enrollStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
@@ -87,7 +87,7 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-    public List<User> getEnrolledStudents(int courseId) {
+    public List<User> getEnrolledStudents(Long courseId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 

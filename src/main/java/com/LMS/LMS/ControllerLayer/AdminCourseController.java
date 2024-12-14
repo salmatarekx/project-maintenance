@@ -21,7 +21,7 @@ public class AdminCourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
     }
     @DeleteMapping("DeleteCourse/{CourseId}")
-    public ResponseEntity<String>DeleteCourse(@PathVariable int CourseId , @RequestAttribute User currentUser){
+    public ResponseEntity<String>DeleteCourse(@PathVariable Long CourseId , @RequestAttribute User currentUser){
         adminCourseService.deleteCourse(CourseId , currentUser);
         return ResponseEntity.ok("Course Deleted successfully");
     }
