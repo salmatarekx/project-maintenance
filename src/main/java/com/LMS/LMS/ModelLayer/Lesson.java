@@ -7,7 +7,7 @@ import java.util.List;
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String topic;
 //    private String content;
 //    private String duration;
@@ -19,11 +19,11 @@ public class Lesson {
 //    @ElementCollection
 //    private List<String> attendanceCodes; // OTPs for attendance
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

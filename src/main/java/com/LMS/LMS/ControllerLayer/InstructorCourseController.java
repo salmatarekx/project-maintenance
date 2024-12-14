@@ -38,7 +38,7 @@ public class InstructorCourseController {
 
     }
     @DeleteMapping("/courses/{CourseId}/students/{StudentId}")
-    public ResponseEntity<String>RemoveStudentFromCourse(@PathVariable int CourseId , @PathVariable Long StudentId)
+    public ResponseEntity<String>RemoveStudentFromCourse(@PathVariable Long CourseId , @PathVariable Long StudentId)
     {
       instructorCourseService.removeStudentfromCourse(CourseId,StudentId);
       return ResponseEntity.ok("Student removed successfully from course.");

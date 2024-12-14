@@ -5,9 +5,7 @@ import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,11 +16,9 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(@Lazy UserRepository userRepository,@Lazy BCryptPasswordEncoder passwordEncoder) {
+    public UserService(@Lazy UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -41,7 +37,7 @@ public class UserService {
         User user = new User();
         user.setUserName(userReq.getUsername());
         user.setEmail(userReq.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(userReq.getPassword()));
+        user.setPassword(userReq.getPassword());
         user.setRole(userReq.getRole());
 
         return userRepository.save(user);
@@ -50,7 +46,7 @@ public class UserService {
 
     public User Login(LoginReq req) {
         User user = userRepository.findByEmail(req.GetEmail()).orElseThrow(() -> new RuntimeException("Invalid Email"));
-        if (!passwordEncoder.matches(user.getPassword(), req.getPassword())) {
+        if (!user.getPassword().equals(req.getPassword())) {
             throw new RuntimeException("INVALID Password");
         }
         return user ;
@@ -70,7 +66,7 @@ public class UserService {
             throw new RuntimeException("Profile not found!");
         }
         if (userRegistration.getPassword() != null && !userRegistration.getPassword().isEmpty() && !userRegistration.getUsername().isEmpty() && userRegistration.getRole()!=null && !userRegistration.getEmail().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
+            user.setPassword(userRegistration.getPassword());
             user.setUserName(userRegistration.getUsername());
             user.setEmail(userRegistration.getEmail());
             user.setRole(userRegistration.getRole());

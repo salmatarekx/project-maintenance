@@ -14,7 +14,7 @@ public class StudentCourseService {
         this.courseService = courseService;
         this.trackingPerformanceService = trackingPerformanceService;
     }
-    public void Enroll(int courseId , Long StudentId){
+    public void Enroll(Long courseId , Long StudentId){
         courseService.enrollStudent(courseId , StudentId);
     }
     public void AccessCourseMaterials(){

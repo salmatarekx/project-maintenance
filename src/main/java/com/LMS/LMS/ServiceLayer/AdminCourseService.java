@@ -21,7 +21,7 @@ public class AdminCourseService {
         return courseService.createCourse(courseDTO, currentUser);
     }
 
-    public void deleteCourse(int id, User currentUser) {
+    public void deleteCourse(Long id, User currentUser) {
         courseService.deleteCourse(id, currentUser);
     }
 

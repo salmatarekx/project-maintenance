@@ -24,7 +24,7 @@ public class InstructorCourseService {
     public Course CreateCourse(CourseDTO courseDTO , User user){
        return courseService.createCourse(courseDTO, user) ;
     }
-    public void removeStudentfromCourse(int courseId, Long studentId) {
+    public void removeStudentfromCourse(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId).orElse(null);
         User student = userRepository.findById(studentId).orElse(null);
 

@@ -1,13 +1,13 @@
-package com.LMS.LMS.DTO;
+    package com.LMS.LMS.DTO;
 
-public class LoginReq {
-    private String email ;
-    private String Password ;
+    public class LoginReq {
+        private String email ;
+        private String Password ;
 
-    public String GetEmail(){
-        return email;
+        public String GetEmail(){
+            return email;
+        }
+        public String getPassword(){
+            return  Password ;
+        }
     }
-    public String getPassword(){
-        return  Password ;
-    }
-}
