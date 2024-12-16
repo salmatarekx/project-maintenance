@@ -18,7 +18,6 @@ public class StudentCourseService {
         courseService.enrollStudent(courseId , StudentId);
     }
     public void AccessCourseMaterials(){
-        // menna
     }
 
 

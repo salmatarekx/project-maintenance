@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/assignments")
+@RequestMapping("/Assignment")
 public class AssignmentController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/GetAssignment/{id}")
     public ResponseEntity<Assignment> getAssignment(@PathVariable Long id) {
         return assignmentService.getAssignment(id)
                 .map(ResponseEntity::ok)

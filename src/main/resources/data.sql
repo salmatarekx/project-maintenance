@@ -45,7 +45,7 @@ VALUES ( 3, 1, true),
 
 
 -- Insert statements for QuizScore
-INSERT INTO quiz_grades ( quiz_id, student_id, grades , feedback)
+INSERT INTO quiz_grades ( quiz_id, student_id, grade , feedback)
 VALUES ( 1, 3, 'B' , 'Good Job'),
        ( 2, 3, 'A+' , 'Excellent'),
        ( 3, 2, 'A' , 'Well done');

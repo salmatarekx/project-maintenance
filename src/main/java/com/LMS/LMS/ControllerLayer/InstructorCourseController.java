@@ -48,13 +48,13 @@ public class InstructorCourseController {
     @Autowired
     private TrackingPerformanceService performanceTrackingService;
 
-    @GetMapping("/performance")
+    @GetMapping("/performance/{courseId}/{studentId}")
     public ResponseEntity<Map<String, Object>> getStudentPerformance(
-            @RequestParam Long courseId, @RequestParam Long studentId) {
+            @PathVariable Long courseId, @PathVariable Long studentId) {
 
 
         Course course = courseService.getAllCourses().stream()
-                .filter(c -> (c.getId() == courseId))
+                .filter(c -> (c.getId().equals(courseId)))
                 .findFirst().orElse(null);
 
         User student = userService.getUserById(studentId).orElse(null);

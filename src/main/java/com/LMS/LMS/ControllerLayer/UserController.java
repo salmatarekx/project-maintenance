@@ -34,7 +34,7 @@ public class UserController {
         userService.Login(req);
         return ResponseEntity.status(HttpStatus.CREATED).body("Login Successfully. ") ;
     }
-    @PostMapping("/ViewProfile/{id}")
+    @GetMapping("/ViewProfile/{id}")
     public ResponseEntity<User>ViewProfile(@PathVariable Long id){
 
         return ResponseEntity.ok(userService.ViewProfile(id));

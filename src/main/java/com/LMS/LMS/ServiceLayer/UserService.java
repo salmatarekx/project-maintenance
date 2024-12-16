@@ -47,7 +47,7 @@ public class UserService {
     public User Login(LoginReq req) {
         User user = userRepository.findByEmail(req.GetEmail()).orElseThrow(() -> new RuntimeException("Invalid Email"));
         if (!user.getPassword().equals(req.getPassword())) {
-            throw new RuntimeException("INVALID Password");
+            throw new RuntimeException("INVALID Password"); // ###Problem
         }
         return user ;
     }
