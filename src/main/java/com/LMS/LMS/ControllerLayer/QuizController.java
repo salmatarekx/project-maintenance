@@ -1,5 +1,6 @@
 package com.LMS.LMS.ControllerLayer;
 
+import com.LMS.LMS.DTO.QuizDetailsDTO;
 import com.LMS.LMS.ModelLayer.Quiz;
 import com.LMS.LMS.ModelLayer.QuizGrades;
 import com.LMS.LMS.ServiceLayer.QuizService;
@@ -15,18 +16,19 @@ public class QuizController {
 
     @Autowired
     private QuizService quizService;
+
     @PostMapping("/CreateQuiz")
     public ResponseEntity<Quiz> createQuiz(@RequestBody Quiz quiz) {
         return ResponseEntity.ok(quizService.createQuiz(quiz));
     }
 
     @GetMapping
-    public ResponseEntity<List<Quiz>> getAllQuizzes() {
+    public ResponseEntity<List<QuizDetailsDTO>> getAllQuizzes() {
         return ResponseEntity.ok(quizService.getAllQuizzes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Quiz> getQuiz(@PathVariable Long id) {
+    public ResponseEntity<QuizDetailsDTO> getQuiz(@PathVariable Long id) {
         return quizService.getQuiz(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
