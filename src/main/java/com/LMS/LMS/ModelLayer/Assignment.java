@@ -1,11 +1,10 @@
 package com.LMS.LMS.ModelLayer;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Assignment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,19 +12,16 @@ public class Assignment {
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private Long maxScore;
+    private Double maxScore;
 
     @ManyToOne
     private Course course;
 
-    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL)
-    private List<AssignmentGrades> grades;
-
     // Constructors
     public Assignment() {}
 
-    public Assignment(Long id, String title, String description, LocalDateTime dueDate,
-                      Long maxScore, Course course) {
+    public Assignment(Long id, String title, String description,
+                      LocalDateTime dueDate, Double maxScore, Course course) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -47,12 +43,9 @@ public class Assignment {
     public LocalDateTime getDueDate() { return dueDate; }
     public void setDueDate(LocalDateTime dueDate) { this.dueDate = dueDate; }
 
-    public Long getMaxScore() { return maxScore; }
-    public void setMaxScore(Long maxScore) { this.maxScore = maxScore; }
+    public Double getMaxScore() { return maxScore; }
+    public void setMaxScore(Double maxScore) { this.maxScore = maxScore; }
 
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
-
-    public List<AssignmentGrades> getGrades() { return grades; }
-    public void setGrades(List<AssignmentGrades> grades) { this.grades = grades; }
 }

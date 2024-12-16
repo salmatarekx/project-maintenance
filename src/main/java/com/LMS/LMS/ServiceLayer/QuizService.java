@@ -3,6 +3,7 @@ package com.LMS.LMS.ServiceLayer;
 import com.LMS.LMS.ModelLayer.Quiz;
 import com.LMS.LMS.ModelLayer.QuizGrades;
 import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.QuizRepo;
 import com.LMS.LMS.RepositoryLayer.QuizGradesRepo;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
@@ -18,6 +19,9 @@ public class QuizService {
 
     @Autowired
     private QuizRepo quizRepo;
+
+    @Autowired
+    private CourseRepository CourseRepository ;
 
     @Autowired
     private QuizGradesRepo gradesRepo;

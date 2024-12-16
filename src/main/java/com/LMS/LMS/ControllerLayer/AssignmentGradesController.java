@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/assignment-grades")
+@RequestMapping("/assignment-grades")
 public class AssignmentGradesController {
 
     @Autowired

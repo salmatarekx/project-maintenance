@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/quizzes")
+@RequestMapping("/quiz")
 public class QuizController {
 
     @Autowired
     private QuizService quizService;
-
-    @PostMapping
+    @PostMapping("/CreateQuiz")
     public ResponseEntity<Quiz> createQuiz(@RequestBody Quiz quiz) {
         return ResponseEntity.ok(quizService.createQuiz(quiz));
     }

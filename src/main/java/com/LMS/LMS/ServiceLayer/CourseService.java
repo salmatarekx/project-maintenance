@@ -1,7 +1,9 @@
 package com.LMS.LMS.ServiceLayer;
+
 import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.ModelLayer.Role;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,29 +18,32 @@ public class CourseService {
     private final UserRepository userRepository;
 
     @Autowired
-    public CourseService(@Lazy CourseRepository courseRepository,@Lazy UserRepository userRepository) {
+    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
     }
 
     public Course createCourse(CourseDTO courseDTO, User currentUser) {
-        if (currentUser.getRole().equals("Student")) {
-            throw new RuntimeException("You do not have permission to create a course");
+        if (currentUser.getRole() == Role.Student) {
+            throw new RuntimeException("Students do not have permission to create courses");
         }
-        User instructor;
-            instructor = userRepository.findById((long) courseDTO.getInstructor().getID())
-                    .orElseThrow(() -> new RuntimeException("Instructor not found"));
+
+        User instructor = userRepository.findById(courseDTO.getInstructor().getID())
+                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+
+        // Verify instructor role
+        if (instructor.getRole() != Role.Instructor) {
+            throw new RuntimeException("Selected user is not an instructor");
+        }
 
         Course course = new Course();
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
         course.setDuration(courseDTO.getDuration());
-//        course.setMediaFiles(courseDTO.getMediaFiles());
         course.setInstructor(instructor);
 
         return courseRepository.save(course);
     }
-
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
@@ -46,30 +51,43 @@ public class CourseService {
 
     public Course getCourseById(Long id) {
         return courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
     }
 
     public Course updateCourse(Long id, CourseDTO courseDTO, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
-        if (currentUser.getRole().equals("Student")) {
+        // Check if user is a student
+        if (currentUser.getRole() == Role.Student) {
+            throw new RuntimeException("Students do not have permission to update courses");
+        }
+
+        // Check if user is the course instructor or an admin
+        if (currentUser.getRole() != Role.Admin &&
+                !course.getInstructor().getID().equals(currentUser.getID())) {
             throw new RuntimeException("You do not have permission to update this course");
         }
 
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
         course.setDuration(courseDTO.getDuration());
-       // course.setMediaFiles(courseDTO.getMediaFiles());
 
         return courseRepository.save(course);
     }
 
     public void deleteCourse(Long id, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
-        if (currentUser.getRole().equals("Student")) {
+        // Check if user is a student
+        if (currentUser.getRole() == Role.Student) {
+            throw new RuntimeException("Students do not have permission to delete courses");
+        }
+
+        // Check if user is the course instructor or an admin
+        if (currentUser.getRole() != Role.Admin &&
+                !course.getInstructor().getID().equals(currentUser.getID())) {
             throw new RuntimeException("You do not have permission to delete this course");
         }
 
@@ -78,10 +96,20 @@ public class CourseService {
 
     public void enrollStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
 
         User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+
+        // Verify student role
+        if (student.getRole() != Role.Student) {
+            throw new RuntimeException("Selected user is not a student");
+        }
+
+        // Check if student is already enrolled
+        if (course.getStudents().contains(student)) {
+            throw new RuntimeException("Student is already enrolled in this course");
+        }
 
         course.getStudents().add(student);
         courseRepository.save(course);
@@ -89,10 +117,8 @@ public class CourseService {
 
     public List<User> getEnrolledStudents(Long courseId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
 
         return course.getStudents();
     }
 }
-
-

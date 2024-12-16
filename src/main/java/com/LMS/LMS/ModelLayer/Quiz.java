@@ -67,7 +67,7 @@ public class Quiz {
     public Long getMaxScore() { return maxScore; }
     public void setMaxScore(Long maxScore) { this.maxScore = maxScore; }
 
-    public Course getCourse() { return course; }
+    public Course getCourse() { return course ; }
     public void setCourse(Course course) { this.course = course; }
 
     public List<QuizGrades> getGrades() { return grades; }
