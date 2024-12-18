@@ -34,18 +34,18 @@
             return ResponseEntity.ok(courseService.getAllCourses());
         }
 
-        @GetMapping("/{id}")
+        @GetMapping("/getCourse/{id}")
         public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
             return ResponseEntity.ok(courseService.getCourseById(id));
         }
 
-        @PutMapping("/{id}")
+        @PutMapping("/updateCourse/{id}")
         public ResponseEntity<String> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO, @RequestAttribute User currentUser) {
             courseService.updateCourse(id, courseDTO, currentUser);
             return ResponseEntity.ok("Course updated successfully.");
         }
 
-        @DeleteMapping("/{id}")
+        @DeleteMapping("/deleteCourse/{id}")
         public ResponseEntity<String> deleteCourse(@PathVariable Long id, @RequestAttribute User currentUser) {
             courseService.deleteCourse(id, currentUser);
             return ResponseEntity.ok("Course deleted successfully.");

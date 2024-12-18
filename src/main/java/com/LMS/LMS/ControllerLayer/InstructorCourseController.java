@@ -166,7 +166,7 @@ public class InstructorCourseController {
     }
 
 
-    @GetMapping("getAssignment/{id}")
+    @GetMapping("/getAssignment/{id}")
     public ResponseEntity<Assignment> getAssignment(@PathVariable Long id) {
         return assignmentService.getAssignment(id)
                 .map(ResponseEntity::ok)
@@ -177,6 +177,28 @@ public class InstructorCourseController {
     public ResponseEntity<List<Assignment>> getAllAssignments() {
         return ResponseEntity.ok(assignmentService.getAllAssignments());
     }
+
+    @Autowired
+    private StudentQuizAssignmentService studentQuizAssignmentService;
+
+    @GetMapping("/getAssignmentGrade/{assignmentId}")
+    public ResponseEntity<List<AssignmentGrades>> viewAssignmentGrade(
+            @PathVariable Long assignmentId) {
+        List<AssignmentGrades> grades = studentQuizAssignmentService.viewAssignmentGrade(assignmentId);
+        return grades != null ?
+                ResponseEntity.ok(grades) :
+                ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getQuizGrades/{quizId}")
+    public ResponseEntity<List<QuizGrades>> viewQuizGrade(
+            @PathVariable Long quizId) {
+       List<QuizGrades> grades = studentQuizAssignmentService.viewQuizGrade(quizId);
+        return grades != null ?
+                ResponseEntity.ok(grades) :
+                ResponseEntity.notFound().build();
+    }
+
 
 
 }
