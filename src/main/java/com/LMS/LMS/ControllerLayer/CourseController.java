@@ -27,10 +27,7 @@
             courseService.createCourse(courseDTO, currentUser);
             return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
         }
-        @GetMapping("/b")
-        public String hello(){
-            return "hello" ;
-        }
+
 
         @GetMapping
         public ResponseEntity<List<Course>> getAllCourses() {
