@@ -66,7 +66,7 @@ public class QuizGradesService {
         return null;
     }
 
-    public List<QuizGrades> getStudentQuizGrades(Long studentId) {
+    public List<QuizGrades> getStudentQuizzesGrades(Long studentId) {
         Optional<User> student = userRepo.findById(studentId);
         if (student.isPresent()) {
             // Assuming you add a findByStudent method to the repository
@@ -75,7 +75,7 @@ public class QuizGradesService {
         return null;
     }
 
-    public List<QuizGrades> getQuizGrades(Long quizId) {
+    public  List<QuizGrades> getQuizGrades(Long quizId) {
         Optional<Quiz> quiz = quizRepo.findById(quizId);
         if (quiz.isPresent()) {
             // Assuming you add a findByQuiz method to the repository

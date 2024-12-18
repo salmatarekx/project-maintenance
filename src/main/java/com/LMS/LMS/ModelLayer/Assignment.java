@@ -12,7 +12,7 @@ public class Assignment {
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private Double maxScore;
+    private Long maxScore;
 
     @ManyToOne
     private Course course;
@@ -21,7 +21,7 @@ public class Assignment {
     public Assignment() {}
 
     public Assignment(Long id, String title, String description,
-                      LocalDateTime dueDate, Double maxScore, Course course) {
+                      LocalDateTime dueDate, Long maxScore, Course course) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,8 +43,8 @@ public class Assignment {
     public LocalDateTime getDueDate() { return dueDate; }
     public void setDueDate(LocalDateTime dueDate) { this.dueDate = dueDate; }
 
-    public Double getMaxScore() { return maxScore; }
-    public void setMaxScore(Double maxScore) { this.maxScore = maxScore; }
+    public Long getMaxScore() { return maxScore; }
+    public void setMaxScore(Long maxScore) { this.maxScore = maxScore; }
 
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
