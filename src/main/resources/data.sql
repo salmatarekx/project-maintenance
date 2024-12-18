@@ -98,46 +98,46 @@ VALUES
     'https://spring.io/guides/gs/testing-web/');
 
 -- Insert statements for Question
-INSERT INTO QUESTION (ID, QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
+INSERT INTO QUESTION ( QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
 VALUES
-(1, 1, 'What is the correct way to declare a variable in Java?',
+( 1, 'What is the correct way to declare a variable in Java?',
     'var x;',
     'int x;',
     'variable x;',
     'declare x;',
     'B',
     5),
-(2, 1, 'Which method is the entry point of a Java program?',
+( 1, 'Which method is the entry point of a Java program?',
     'start()',
     'run()',
     'main()',
     'execute()',
     'C',
     5),
-(3, 1, 'What is the size of int data type in Java?',
+( 1, 'What is the size of int data type in Java?',
     '16 bit',
     '32 bit',
     '64 bit',
     '8 bit',
     'B',
     5);
-INSERT INTO QUESTION (ID, QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
+INSERT INTO QUESTION ( QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
 VALUES
-(4, 2, 'Which annotation is used to create a REST controller in Spring?',
+( 2, 'Which annotation is used to create a REST controller in Spring?',
     '@Controller',
     '@RestController',
     '@Service',
     '@Repository',
     'B',
     10),
-(5, 2, 'What is the default scope of a bean in Spring?',
+( 2, 'What is the default scope of a bean in Spring?',
     'Prototype',
     'Singleton',
     'Request',
     'Session',
     'B',
     10),
-(6, 2, 'Which dependency is required for Spring Boot Web applications?',
+( 2, 'Which dependency is required for Spring Boot Web applications?',
     'spring-boot-starter-data-jpa',
     'spring-boot-starter-test',
     'spring-boot-starter-web',
