@@ -18,6 +18,10 @@ public class Quiz {
     private Long timeLimit;
     private Long maxScore;
 
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    private List<Question> questions;
+
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
@@ -72,4 +76,7 @@ public class Quiz {
 
     public List<QuizGrades> getGrades() { return grades; }
     public void setGrades(List<QuizGrades> grades) { this.grades = grades; }
+
+    public List<Question> getQuestions() { return questions; }
+    public void setQuestions(List<Question> questions) { this.questions = questions; }
 }
