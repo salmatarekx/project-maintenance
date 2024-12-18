@@ -7,6 +7,12 @@ public class UserRegistration {
     private String email;
     private String password;
     private Role role;
+    public UserRegistration(String username , String email , String Password  , Role role){
+        this.username = username ;
+        this.email = email;
+        this.password = Password ;
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;

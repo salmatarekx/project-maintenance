@@ -28,11 +28,9 @@ public class UserService {
 
 
     public User Register(UserRegistration userReq) {
-        User existedUser  = userRepository.findByEmail(userReq.getEmail()).orElse(null) ;
-
-
-        if (existedUser != null){
-            throw new RuntimeException("Email is already Exist !");
+        Optional<User> existingUser = userRepository.findByEmail(userReq.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Email is already Exist!");
         }
         User user = new User();
         user.setUserName(userReq.getUsername());
