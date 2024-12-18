@@ -1,4 +1,4 @@
-package com.LMS.LMS.UnitTesting;
+package com.LMS.LMS;
 
 import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.User;
