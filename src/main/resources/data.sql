@@ -2,7 +2,9 @@
 INSERT INTO Users ( User_Name, Password, role, Email)
 VALUES ( 'admin', 'admin123', 'ADMIN', 'admin@example.com'),
        ( 'instructor1', 'instr123', 'INSTRUCTOR', 'instr1@example.com'),
-       ( 'student1', 'stud123', 'STUDENT', 'student1@example.com');
+       ( 'student1', 'stud123', 'STUDENT', 'student1@example.com'),
+       ( 'student2', 'stud2123', 'STUDENT', 'student2@example.com'),
+       ( 'student3', 'stud3123', 'STUDENT', 'student3@example.com');
 --
 -- Insert statements for Course
 INSERT INTO Course (title, description, duration, instructor_id)
@@ -30,7 +32,9 @@ VALUES ('Java Project 1', 1),
 
 -- Insert statements for Assignment
 INSERT INTO assignment_grades ( student_id , assignment_id , grade, feedback)
-VALUES (2, 1,  'B+', 'Good job!'),
+VALUES (1, 1,  'A+', 'Excellent'),
+       (2, 2,  'B', 'Good'),
+       (2, 2,  'B+', 'Good job!'),
        ( 3, 1, 'A', 'Well done!');
 --
 
@@ -48,7 +52,7 @@ VALUES ( 3, 1, true),
 INSERT INTO quiz_grades ( quiz_id, student_id, grade , feedback)
 VALUES ( 1, 3, 'B' , 'Good Job'),
        ( 2, 3, 'A+' , 'Excellent'),
+       ( 2, 1, 'A+' , 'Excellent'),
        ( 3, 2, 'A' , 'Well done');
-
 
 

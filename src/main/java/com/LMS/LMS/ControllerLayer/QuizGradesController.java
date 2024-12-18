@@ -48,7 +48,7 @@ public class QuizGradesController {
 
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<QuizGrades>> getStudentQuizGrades(@PathVariable Long studentId) {
-        List<QuizGrades> grades = gradesService.getStudentQuizGrades(studentId);
+        List<QuizGrades> grades = gradesService.getStudentQuizzesGrades(studentId);
         return grades != null ?
                 ResponseEntity.ok(grades) :
                 ResponseEntity.notFound().build();

@@ -3,23 +3,18 @@ package com.LMS.LMS.ServiceLayer;
 import com.LMS.LMS.ModelLayer.Assignment;
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
-import com.LMS.LMS.DTO.AssignmentDetailsDTO;
 import com.LMS.LMS.RepositoryLayer.AssignmentGradesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 
 @Service
 public class AssignmentService {
 
     @Autowired
     private AssignmentRepo assignmentRepo;
-
-
 
     @Autowired
     private AssignmentGradesRepo gradesRepo;
@@ -40,31 +35,14 @@ public class AssignmentService {
         return gradesRepo.save(submission);
     }
 
-    public Optional<AssignmentDetailsDTO> getAssignmentDetails(Long id) {
-        Optional<Assignment> assignment = assignmentRepo.findById(id);
-
-        return assignment.map(a -> new AssignmentDetailsDTO(
-                a.getId(),
-                a.getTitle(),
-                a.getDueDate(),
-                a.getMaxScore(),
-                a.getCourse().getTitle(),
-                a.getCourse().getInstructor().getUserName()
-        ));
-    }
-    public List<AssignmentDetailsDTO> getAllAssignmentDetails() {
-        List<Assignment> assignments = assignmentRepo.findAll();
-
-        return assignments.stream()
-                .map(a -> new AssignmentDetailsDTO(
-                        a.getId(),
-                        a.getTitle(),
-
-                        a.getDueDate(),
-                        a.getMaxScore(),
-                        a.getCourse().getTitle(),
-                        a.getCourse().getInstructor().getUserName()
-                ))
-                .collect(Collectors.toList());
+    public AssignmentGrades gradeAssignment(Long submissionId, String grade, String feedback) {
+        Optional<AssignmentGrades> submission = gradesRepo.findById(submissionId);
+        if (submission.isPresent()) {
+            AssignmentGrades graded = submission.get();
+            graded.setGrade(grade);
+            graded.setFeedback(feedback);
+            return gradesRepo.save(graded);
+        }
+        return null;
     }
 }

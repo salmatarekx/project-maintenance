@@ -3,7 +3,6 @@ package com.LMS.LMS.ServiceLayer;
 import com.LMS.LMS.ModelLayer.Quiz;
 import com.LMS.LMS.ModelLayer.QuizGrades;
 import com.LMS.LMS.ModelLayer.User;
-import com.LMS.LMS.DTO.QuizDetailsDTO;
 import com.LMS.LMS.RepositoryLayer.QuizRepo;
 import com.LMS.LMS.RepositoryLayer.QuizGradesRepo;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class QuizService {
@@ -27,38 +25,17 @@ public class QuizService {
     @Autowired
     private UserRepository userRepo;
 
-    public Quiz createQuiz(Quiz quiz) {
+    public Quiz createQuiz(Quiz quiz)
+    {
         return quizRepo.save(quiz);
     }
 
-    public Optional<QuizDetailsDTO> getQuiz(Long id) {
-        Optional<Quiz> quiz = quizRepo.findById(id);
-
-        return quiz.map(q -> new QuizDetailsDTO(
-                q.getId(),
-                q.getTitle(),
-                q.getStartTime(),
-                q.getEndTime(),
-                q.getMaxScore(),
-                q.getCourse().getTitle(),
-                q.getCourse().getInstructor().getUserName()
-        ));
+    public Optional<Quiz> getQuiz(Long id) {
+        return quizRepo.findById(id);
     }
 
-    public List<QuizDetailsDTO> getAllQuizzes() {
-        List<Quiz> quizzes = quizRepo.findAll();
-
-        return quizzes.stream()
-                .map(q -> new QuizDetailsDTO(
-                        q.getId(),
-                        q.getTitle(),
-                        q.getStartTime(),
-                        q.getEndTime(),
-                        q.getMaxScore(),
-                        q.getCourse().getTitle(),
-                        q.getCourse().getInstructor().getUserName()
-                ))
-                .collect(Collectors.toList());
+    public List<Quiz> getAllQuizzes() {
+        return quizRepo.findAll();
     }
 
     public QuizGrades startQuiz(Long quizId, Long studentId) {

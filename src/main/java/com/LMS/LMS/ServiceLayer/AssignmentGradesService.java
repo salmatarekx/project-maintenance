@@ -51,7 +51,7 @@ public class AssignmentGradesService {
         return null;
     }
 
-    public List<AssignmentGrades> getStudentGrades(long studentId) {
+    public List<AssignmentGrades> getAssignmentsGrades(long studentId) {
         Optional<User> student = userRepo.findById(studentId);
         if (student.isPresent()) {
             return assignmentGradesRepo.findByStudent(student.get());
@@ -59,7 +59,7 @@ public class AssignmentGradesService {
         return null;
     }
 
-    public List<AssignmentGrades> getAssignmentGrades(long assignmentId) {
+    public List<AssignmentGrades> getAssignmentGrade(long assignmentId) {
         Optional<Assignment> assignment = assignmentRepo.findById(assignmentId);
         if (assignment.isPresent()) {
             return assignmentGradesRepo.findByAssignment(assignment.get());

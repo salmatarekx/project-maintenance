@@ -2,6 +2,7 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.ModelLayer.QuizGrades;
+import com.LMS.LMS.ServiceLayer.QuizService;
 import com.LMS.LMS.ServiceLayer.StudentQuizAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,21 +38,55 @@ public class StudentQuizAssignmentController {
                 ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/{studentId}/assignment-grades")
-    public ResponseEntity<List<AssignmentGrades>> viewAssignmentGrades(
+    @GetMapping("/getAssignmentsGrades/{studentId}")
+    public ResponseEntity<List<AssignmentGrades>> viewAssignmentsGrades(
             @PathVariable Long studentId) {
-        List<AssignmentGrades> grades = studentQuizAssignmentService.viewAssignmentGrades(studentId);
+        List<AssignmentGrades> grades = studentQuizAssignmentService.viewAssignmentsGrades(studentId);
         return grades != null ?
                 ResponseEntity.ok(grades) :
                 ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{studentId}/quiz-grades")
-    public ResponseEntity<List<QuizGrades>> viewQuizGrades(
+    // instructor only?
+//    @GetMapping("/getAssignmentGrade/{assignmentId}")
+//    public ResponseEntity<List<AssignmentGrades>> viewAssignmentGrade(
+//            @PathVariable Long assignmentId) {
+//        List<AssignmentGrades> grades = studentQuizAssignmentService.viewAssignmentGrade(assignmentId);
+//        return grades != null ?
+//                ResponseEntity.ok(grades) :
+//                ResponseEntity.notFound().build();
+//    }
+
+    @GetMapping("/getQuizzesGrades/{studentId}")
+    public ResponseEntity<List<QuizGrades>> viewQuizzesGrades(
             @PathVariable Long studentId) {
-        List<QuizGrades> grades = studentQuizAssignmentService.viewQuizGrades(studentId);
+        List<QuizGrades> grades = studentQuizAssignmentService.viewQuizzesGrades(studentId);
         return grades != null ?
                 ResponseEntity.ok(grades) :
                 ResponseEntity.notFound().build();
+    }
+
+    // instructor only?
+//    @GetMapping("/getQuizGrades/{quizId}")
+//    public ResponseEntity<List<QuizGrades>> viewQuizGrade(
+//            @PathVariable Long quizId) {
+//       List<QuizGrades> grades = studentQuizAssignmentService.viewQuizGrade(quizId);
+//        return grades != null ?
+//                ResponseEntity.ok(grades) :
+//                ResponseEntity.notFound().build();
+//    }
+
+
+    @Autowired
+    private QuizService quizService;
+
+    @PostMapping("/submitQuiz/{id}")
+    public ResponseEntity<QuizGrades> submitQuiz(
+            @PathVariable Long id,
+            @RequestBody QuizGrades submission) {
+        QuizGrades submittedQuiz = quizService.submitQuiz(submission);
+        return submittedQuiz != null ?
+                ResponseEntity.ok(submittedQuiz) :
+                ResponseEntity.badRequest().build();
     }
 }
