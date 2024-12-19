@@ -30,7 +30,6 @@ public class CourseServiceTest {
     public void setup() {
         courseRepository = mock(CourseRepository.class);
         userRepository = mock(UserRepository.class);
-        courseService = new CourseService(courseRepository, userRepository);
     }
 
     @Test
