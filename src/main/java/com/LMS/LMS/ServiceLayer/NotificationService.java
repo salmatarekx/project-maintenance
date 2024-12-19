@@ -1,5 +1,6 @@
 package com.LMS.LMS.ServiceLayer;
 
+import com.LMS.LMS.DTO.NotificationDTO;
 import com.LMS.LMS.ModelLayer.Notification;
 import com.LMS.LMS.RepositoryLayer.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,12 @@ public class NotificationService {
     public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }
-
-    public Notification createNotification(Long recipientId, Long senderId, String message, String type) {
+    public Notification createNotification(NotificationDTO notificationDTO) {
         Notification notification = new Notification();
-        notification.setRecipientId(recipientId);
-        notification.setSenderId(senderId);
-        notification.setMessage(message);
-        notification.setType(type);
+        notification.setRecipientId(notificationDTO.getRecipientId());
+        notification.setSenderId(notificationDTO.GetSenderId());
+        notification.setMessage(notificationDTO.getMessage());
+        notification.setType(notificationDTO.getType());
         return notificationRepository.save(notification);
     }
 

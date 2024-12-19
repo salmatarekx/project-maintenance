@@ -53,8 +53,8 @@
             return ResponseEntity.ok("Course deleted successfully.");
         }
 
-        @PostMapping("/{courseId}/enroll")
-        public ResponseEntity<String> enrollStudent(@PathVariable Long courseId, @RequestParam Long studentId) {
+        @PostMapping("/{courseId}/enroll/{studentId}")
+        public ResponseEntity<String> enrollStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
             courseService.enrollStudent(courseId, studentId);
             return ResponseEntity.ok("Student enrolled successfully.");
         }
