@@ -184,7 +184,7 @@ public class InstructorCourseController {
     @Autowired
     private AssignmentTaskService taskService;
 
-    @PostMapping("/assignment/{assignmentId}")
+    @PostMapping("/addTaskToAssignment/{assignmentId}")
     public ResponseEntity<AssignmentTask> addTaskToAssignment(
             @PathVariable Long assignmentId,
             @RequestBody Map<String, Object> taskData) {
@@ -206,7 +206,7 @@ public class InstructorCourseController {
         }
     }
 
-    @GetMapping("/assignment/{assignmentId}")
+    @GetMapping("/getAssignmentTasks/{assignmentId}")
     public ResponseEntity<List<AssignmentTask>> getAssignmentTasks(@PathVariable Long assignmentId) {
         try {
             Assignment assignment = assignmentService.getAssignment(assignmentId)
@@ -217,7 +217,7 @@ public class InstructorCourseController {
         }
     }
 
-    @DeleteMapping("/{taskId}")
+    @DeleteMapping("deleteAssignmentTask/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         try {
             taskService.deleteTask(taskId);

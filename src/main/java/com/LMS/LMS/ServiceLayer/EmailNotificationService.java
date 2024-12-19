@@ -41,7 +41,7 @@ public class EmailNotificationService {
     public void sendGradedAssignmentConfirmation(String studentEmail, String grade, String AssignmentName) {
         String subject = "Graded Assignment Confirmation";
 
-        String body = String.format("Dear Student,\n\nYour assignment '%s' has been graded. You scored %.2f.\n\nBest regards,\nCourse Team", AssignmentName, grade);
+        String body = String.format("Dear Student,\n\nYour assignment '%s' has been graded. You scored %s.\n\nBest regards,\nCourse Team", AssignmentName, grade);
 
         try {
             this.sendEmail(studentEmail, subject, body);

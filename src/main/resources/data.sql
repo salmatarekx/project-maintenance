@@ -3,7 +3,7 @@ INSERT INTO Users ( User_Name, Password, role, Email)
 VALUES ( 'admin', 'admin123', 'ADMIN', 'admin@example.com'),
        ( 'instructor1', 'instr123', 'INSTRUCTOR', 'instr1@example.com'),
        ( 'student1', 'stud123', 'STUDENT', 'student1@example.com'),
-       ( 'student2', 'stud2123', 'STUDENT', 'student2@example.com'),
+       ( 'student2', 'stud2123', 'STUDENT', 'wdm46857@gmail.com'),
        ( 'student3', 'stud3123', 'STUDENT', 'ziadtawfik2003@gmail.com');
 --
 -- Insert statements for Course

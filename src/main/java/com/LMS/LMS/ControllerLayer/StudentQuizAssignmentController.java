@@ -93,6 +93,7 @@ public class StudentQuizAssignmentController {
     }
     @GetMapping("/VAG/{StudentId}/{AssignmentId}")
     public ResponseEntity<AssignmentGrades>ViewAssignmentGrade(@PathVariable Long StudentId ,@PathVariable Long AssignmentId ){
-     return ResponseEntity.ok( studentQuizAssignmentService.ViewStudentAssignmentGrade(StudentId , AssignmentId));
+        AssignmentGrades assignmentGrades = studentQuizAssignmentService.ViewStudentAssignmentGrade(StudentId,AssignmentId);
+     return ResponseEntity.ok(assignmentGrades);
     }
 }

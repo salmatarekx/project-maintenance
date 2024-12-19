@@ -34,6 +34,9 @@ public class StudentQuizAssignmentService {
     private AssignmentRepo assignmentRepo ;
     @Autowired
     private UserRepository userRepository ;
+    @Autowired
+    private EmailNotificationService emailnotificationService ;
+
 
     public QuizGrades takeQuiz(Long quizId, Long studentId) {
         // Start a new quiz attempt
@@ -63,7 +66,7 @@ public class StudentQuizAssignmentService {
         Assignment assignment = assignmentRepo.findById(assignmentId).orElse(null);
         User Student = userRepository.findById(studentId).orElse(null);
         AssignmentGrades assignmentGrades = assignmentGradesRepo.findByStudentAndAssignment(Student,assignment);
-
+        emailnotificationService.sendGradedAssignmentConfirmation(Student.getEmail(),assignmentGrades.getGrade() , assignment.getTitle());
         return assignmentGrades ;
     }
 
