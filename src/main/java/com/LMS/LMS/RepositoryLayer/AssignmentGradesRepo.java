@@ -10,4 +10,8 @@ import java.util.List;
 public interface AssignmentGradesRepo extends JpaRepository<AssignmentGrades, Long> {
     List<AssignmentGrades> findByStudent(User student);
     List<AssignmentGrades> findByAssignment(Assignment assignment);
+
+//    @Query("select Assignment.from ")
+    AssignmentGrades findByStudentAndAssignment(User user , Assignment assignment) ;
+
 }
