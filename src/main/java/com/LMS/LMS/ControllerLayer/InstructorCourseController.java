@@ -165,14 +165,6 @@ public class InstructorCourseController {
         }
     }
 
-
-    @GetMapping("/getAssignment/{id}")
-    public ResponseEntity<Assignment> getAssignment(@PathVariable Long id) {
-        return assignmentService.getAssignment(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/getAllAssignments")
     public ResponseEntity<List<Assignment>> getAllAssignments() {
         return ResponseEntity.ok(assignmentService.getAllAssignments());
@@ -189,7 +181,51 @@ public class InstructorCourseController {
                 ResponseEntity.ok(grades) :
                 ResponseEntity.notFound().build();
     }
+    @Autowired
+    private AssignmentTaskService taskService;
 
+    @PostMapping("/assignment/{assignmentId}")
+    public ResponseEntity<AssignmentTask> addTaskToAssignment(
+            @PathVariable Long assignmentId,
+            @RequestBody Map<String, Object> taskData) {
+        try {
+            Assignment assignment = assignmentService.getAssignment(assignmentId)
+                    .orElseThrow(() -> new RuntimeException("Assignment not found"));
+
+            AssignmentTask task = new AssignmentTask();
+            task.setAssignment(assignment);
+            task.setTaskDescription((String) taskData.get("taskDescription"));
+            task.setExpectedOutput((String) taskData.get("expectedOutput"));
+            task.setPoints((Integer) taskData.get("points"));
+            task.setTaskType((String) taskData.get("taskType"));
+            task.setAdditionalResources((String) taskData.get("additionalResources"));
+
+            return ResponseEntity.ok(taskService.createTask(task));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/assignment/{assignmentId}")
+    public ResponseEntity<List<AssignmentTask>> getAssignmentTasks(@PathVariable Long assignmentId) {
+        try {
+            Assignment assignment = assignmentService.getAssignment(assignmentId)
+                    .orElseThrow(() -> new RuntimeException("Assignment not found"));
+            return ResponseEntity.ok(taskService.getAssignmentTasks(assignment));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
+        try {
+            taskService.deleteTask(taskId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/getQuizGrades/{quizId}")
     public ResponseEntity<List<QuizGrades>> viewQuizGrade(
             @PathVariable Long quizId) {
