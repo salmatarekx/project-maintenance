@@ -37,7 +37,6 @@ class TrackingPerformanceServiceTest {
 
     @Test
     void testGetSimplifiedPerformance() {
-        // Arrange
         User student = new User();
         Course course = new Course();
         Lesson lesson = new Lesson();
@@ -81,14 +80,11 @@ class TrackingPerformanceServiceTest {
         List<AssignmentGrades> assignmentGradesRecords = Collections.singletonList(assignmentGrades);
         when(assignmentGradesRepo.findAll()).thenReturn(assignmentGradesRecords);
 
-        // Act
         Map<String, Object> performanceData = trackingPerformanceService.getSimplifiedPerformance(student, course);
 
-        // Assert
         assertNotNull(performanceData);
         assertEquals("1/2 sessions", performanceData.get("attendance"));
 
-        @SuppressWarnings("unchecked")
         List<Map<String, String>> quizScores = (List<Map<String, String>>) performanceData.get("quizScores");
         assertEquals(1, quizScores.size());
         assertEquals("Quiz 1", quizScores.get(0).get("quizTitle"));

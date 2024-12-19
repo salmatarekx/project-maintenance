@@ -1,5 +1,6 @@
 package com.LMS.LMS.ServiceLayer;
 
+import com.LMS.LMS.ModelLayer.Assignment;
 import com.LMS.LMS.ModelLayer.Quiz;
 import com.LMS.LMS.ModelLayer.QuizGrades;
 import com.LMS.LMS.ModelLayer.User;
@@ -72,5 +73,13 @@ public class QuizService {
             return gradesRepo.save(submission);
         }
         return null;
+    }
+    public void DeleteQuiz(long id){
+        Quiz quiz = quizRepo.findById(id).orElse(null);
+        if (quiz != null)
+        {
+            quizRepo.delete(quiz);
+        }
+        throw new RuntimeException("Quiz is not Found!");
     }
 }

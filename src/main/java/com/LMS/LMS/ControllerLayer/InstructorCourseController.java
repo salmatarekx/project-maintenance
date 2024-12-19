@@ -247,7 +247,16 @@ public class InstructorCourseController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @DeleteMapping("deleteAssignment/{Id}")
+    public ResponseEntity<String>DeleteAssignment(@PathVariable long Id){
+        assignmentService.DeleteAssignment(Id);
+        return ResponseEntity.ok("Deleted Successfully") ;
+    }
+    @DeleteMapping("deleteQuiz/{Id}")
+    public ResponseEntity<String>DeleteQuiz(@PathVariable long Id){
+        quizService.DeleteQuiz(Id);
+        return ResponseEntity.ok("Deleted Successfully") ;
+    }
 
 
 }

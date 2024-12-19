@@ -45,4 +45,12 @@ public class AssignmentService {
         }
         return null;
     }
+    public void DeleteAssignment(long id){
+        Assignment assignment = assignmentRepo.findById(id).orElse(null);
+        if (assignment != null)
+        {
+            assignmentRepo.delete(assignment);
+        }
+        throw new RuntimeException("Assignment is not Found!");
+    }
 }
