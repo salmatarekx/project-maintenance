@@ -4,7 +4,9 @@ import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.ModelLayer.QuizGrades;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -28,11 +30,15 @@ public class StudentQuizAssignmentService {
     }
 
 
-    public AssignmentGrades handInAssignment(Long assignmentId, Long studentId, String submissionContent) {
-        // Submit an assignment
-        return assignmentGradesService.submitAssignment(assignmentId, studentId, submissionContent);
+    public AssignmentGrades handInAssignment(Long assignmentId, Long studentId, MultipartFile file) {
+        try {
+            // Submit an assignment with file handling
+            return assignmentGradesService.submitAssignment(assignmentId, studentId, file);
+        } catch (IOException e) {
+            // Handle the IOException from file processing
+            throw new RuntimeException("Error processing assignment submission file: " + e.getMessage(), e);
+        }
     }
-
     public List<AssignmentGrades> viewAssignmentsGrades(Long studentId) {
         // View student's assignment grades
         return assignmentGradesService.getAssignmentsGrades(studentId);
