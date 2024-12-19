@@ -4,6 +4,14 @@ import java.time.LocalDateTime;
 
 @Entity
 public class AssignmentGrades {
+
+    private String fileName;
+    private String fileType;
+
+    @Lob
+    @Column(name = "file_data", length = 10000000)
+    private byte[] fileData;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -70,5 +78,13 @@ public class AssignmentGrades {
         this.isLate = submissionDate != null && assignment != null &&
                 submissionDate.isAfter(assignment.getDueDate());
     }
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
+
+    public String getFileType() { return fileType; }
+    public void setFileType(String fileType) { this.fileType = fileType; }
+
+    public byte[] getFileData() { return fileData; }
+    public void setFileData(byte[] fileData) { this.fileData = fileData; }
 
 }

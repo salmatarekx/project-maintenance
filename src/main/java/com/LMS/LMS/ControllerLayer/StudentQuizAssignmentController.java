@@ -2,16 +2,18 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.ModelLayer.QuizGrades;
+import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ServiceLayer.QuizService;
 import com.LMS.LMS.ServiceLayer.StudentQuizAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/student")
 public class StudentQuizAssignmentController {
 
     @Autowired
@@ -31,8 +33,8 @@ public class StudentQuizAssignmentController {
     public ResponseEntity<AssignmentGrades> handInAssignment(
             @PathVariable Long assignmentId,
             @RequestParam Long studentId,
-            @RequestBody String submissionContent) {
-        AssignmentGrades submission = studentQuizAssignmentService.handInAssignment(assignmentId, studentId, submissionContent);
+            @RequestParam("file") MultipartFile file) {
+        AssignmentGrades submission = studentQuizAssignmentService.handInAssignment(assignmentId, studentId, file);
         return submission != null ?
                 ResponseEntity.ok(submission) :
                 ResponseEntity.badRequest().build();
@@ -88,5 +90,9 @@ public class StudentQuizAssignmentController {
         return submittedQuiz != null ?
                 ResponseEntity.ok(submittedQuiz) :
                 ResponseEntity.badRequest().build();
+    }
+    @GetMapping("/VAG/{StudentId}/{AssignmentId}")
+    public ResponseEntity<AssignmentGrades>ViewAssignmentGrade(@PathVariable Long StudentId ,@PathVariable Long AssignmentId ){
+     return ResponseEntity.ok( studentQuizAssignmentService.ViewStudentAssignmentGrade(StudentId , AssignmentId));
     }
 }

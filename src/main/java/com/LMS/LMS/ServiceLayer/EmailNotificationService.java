@@ -37,7 +37,23 @@ public class EmailNotificationService {
             throw new RuntimeException("Failed to send enrollment confirmation email.", e);
         }
     }
+
+    public void sendGradedAssignmentConfirmation(String studentEmail, String grade, String AssignmentName) {
+        String subject = "Graded Assignment Confirmation";
+
+        String body = String.format("Dear Student,\n\nYour assignment '%s' has been graded. You scored %.2f.\n\nBest regards,\nCourse Team", AssignmentName, grade);
+
+        try {
+            this.sendEmail(studentEmail, subject, body);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (jakarta.mail.MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
+
 
 
 

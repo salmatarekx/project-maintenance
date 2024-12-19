@@ -116,11 +116,11 @@ VALUES
     'C',
     5),
 ( 1, 'What is the size of int data type in Java?',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     '16 bit',
-    '32 bit',
-    '64 bit',
-    '8 bit',
-    'B',
     5);
 INSERT INTO QUESTION ( QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
 VALUES
@@ -144,6 +144,20 @@ VALUES
     'spring-boot-starter-web',
     'spring-boot-starter-security',
     'C',
+    10),
+( 2, 'Java is a platform-dependent programming language',
+    'True',
+    'False',
+    NULL,
+    NULL,
+    'B',
+    10),
+( 2, 'The == operator in Java compares the content of two String objects.',
+    'True',
+    'False',
+    NULL,
+    NULL,
+    'B',
     10);
 
 
