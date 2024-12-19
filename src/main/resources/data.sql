@@ -34,7 +34,7 @@ VALUES ('Java Project 1', 1),
 -- Insert statements for Assignment
 INSERT INTO assignment_grades ( student_id , assignment_id , grade, feedback)
 VALUES (3, 1,  'A+', 'Excellent'),
-       (4, 2,  'B', 'Good'),
+       (4, 1,  'B', 'Good'),
        (4, 2,  'B+', 'Good job!'),
        ( 5, 1, 'A', 'Well done!');
 --

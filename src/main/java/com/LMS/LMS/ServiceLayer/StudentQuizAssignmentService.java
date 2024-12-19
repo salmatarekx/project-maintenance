@@ -59,7 +59,7 @@ public class StudentQuizAssignmentService {
         // View student's assignment grades
         return assignmentGradesService.getAssignmentGrade(assignmentId);
     }
-    public AssignmentGrades ViewStudentAssignmentGrade(Long assignmentId , Long studentId){
+    public AssignmentGrades ViewStudentAssignmentGrade( Long studentId , Long assignmentId){
         Assignment assignment = assignmentRepo.findById(assignmentId).orElse(null);
         User Student = userRepository.findById(studentId).orElse(null);
         AssignmentGrades assignmentGrades = assignmentGradesRepo.findByStudentAndAssignment(Student,assignment);
