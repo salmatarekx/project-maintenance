@@ -17,22 +17,29 @@ public class NotificationService {
     public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }
+
     public Notification createNotification(NotificationDTO notificationDTO) {
         Notification notification = new Notification();
         notification.setRecipientId(notificationDTO.getRecipientId());
-        notification.setSenderId(notificationDTO.GetSenderId());
+        notification.setSenderId(notificationDTO.getSenderId());
         notification.setMessage(notificationDTO.getMessage());
         notification.setType(notificationDTO.getType());
+        notification.setRead(notificationDTO.getIsRead());
         return notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsForRecipient(Long recipientId) {
-        return notificationRepository.findByRecipientId(recipientId);
+    public List<Notification> getNotificationsForRecipient(Long recipientId, boolean onlyUnread) {
+        return onlyUnread
+                ? notificationRepository.findByRecipientIdAndIsReadFalse(recipientId)
+                : notificationRepository.findByRecipientId(recipientId);
     }
 
-    public void markAsRead(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new RuntimeException("Notification not found"));
+    public List<Notification> getInstructorNotifications(Long instructorId) {
+        return notificationRepository.findByTypeAndSenderId("ENROLLMENT_CONFIRMATION", instructorId);
+    }
+
+    public void markAsRead(Long id) {
+        Notification notification = notificationRepository.findById(id).orElseThrow();
         notification.setRead(true);
         notificationRepository.save(notification);
     }
