@@ -17,10 +17,13 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
+    private final EmailNotificationService EmailnotificationService ;
+
     @Autowired
-    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository) {
+    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository , @Lazy EmailNotificationService notificationService) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.EmailnotificationService = notificationService ;
     }
 
     public Course createCourse(CourseDTO courseDTO, User currentUser) {
@@ -95,11 +98,13 @@ public class CourseService {
     }
 
     public void enrollStudent(Long courseId, Long studentId) {
+
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
 
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+
 
         // Verify student role
         if (student.getRole() != Role.Student) {
@@ -113,6 +118,8 @@ public class CourseService {
 
         course.getStudents().add(student);
         courseRepository.save(course);
+        EmailnotificationService.sendEnrollmentConfirmation(student.getEmail() ,course.getTitle());
+
     }
 
     public List<User> getEnrolledStudents(Long courseId) {
