@@ -1,11 +1,9 @@
 package com.LMS.LMS.ServiceLayer;
 
-import com.LMS.LMS.ModelLayer.Assignment;
-import com.LMS.LMS.ModelLayer.AssignmentGrades;
-import com.LMS.LMS.ModelLayer.QuizGrades;
-import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.ModelLayer.*;
 import com.LMS.LMS.RepositoryLayer.AssignmentGradesRepo;
 import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
+import com.LMS.LMS.RepositoryLayer.NotificationRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +34,8 @@ public class StudentQuizAssignmentService {
     private UserRepository userRepository ;
     @Autowired
     private EmailNotificationService emailnotificationService ;
-
+    @Autowired
+    private  NotificationRepository notificationRepository;
 
     public QuizGrades takeQuiz(Long quizId, Long studentId) {
         // Start a new quiz attempt
@@ -67,6 +66,14 @@ public class StudentQuizAssignmentService {
         User Student = userRepository.findById(studentId).orElse(null);
         AssignmentGrades assignmentGrades = assignmentGradesRepo.findByStudentAndAssignment(Student,assignment);
         emailnotificationService.sendGradedAssignmentConfirmation(Student.getEmail(),assignmentGrades.getGrade() , assignment.getTitle());
+
+        Notification studentNotification = new Notification();
+        studentNotification.setRecipientId(Student.getID());
+        studentNotification.setSenderId(assignment.getInstructor().getID());
+        studentNotification.setMessage("Your assignment '" + assignment.getTitle() + "' has been graded. Your grade: " + assignmentGrades.getGrade());
+        studentNotification.setType("ASSIGNMENT_GRADED");
+        notificationRepository.save(studentNotification);
+
         return assignmentGrades ;
     }
 

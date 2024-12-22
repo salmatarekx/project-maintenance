@@ -17,6 +17,10 @@ public class Assignment {
     @ManyToOne
     private Course course;
 
+    @ManyToOne
+    @JoinColumn(name = "instructor_id", nullable = false)
+    private User instructor;
+
     // Constructors
     public Assignment() {}
 
@@ -48,4 +52,12 @@ public class Assignment {
 
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
+
+    public User getInstructor() {
+        return instructor;
+    }
+    public void setInstructor(User instructor) {
+        this.instructor = instructor;
+    }
+
 }
