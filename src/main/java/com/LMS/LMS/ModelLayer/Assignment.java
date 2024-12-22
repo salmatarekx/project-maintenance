@@ -1,5 +1,6 @@
 package com.LMS.LMS.ModelLayer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -15,6 +16,8 @@ public class Assignment {
     private Long maxScore;
 
     @ManyToOne
+    @JoinColumn(name = "course_id")
+    @JsonIgnore // Prevents serialization of course to avoid infinite loop
     private Course course;
 
     @ManyToOne
