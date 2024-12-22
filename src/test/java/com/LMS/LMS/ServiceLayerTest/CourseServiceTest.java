@@ -6,7 +6,9 @@ import com.LMS.LMS.ModelLayer.Role;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
+import com.LMS.LMS.RepositoryLayer.NotificationRepository;
 import com.LMS.LMS.ServiceLayer.CourseService;
+import com.LMS.LMS.ServiceLayer.EmailNotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,12 +26,17 @@ public class CourseServiceTest {
 
     private CourseRepository courseRepository;
     private UserRepository userRepository;
+    private NotificationRepository notificationRepository;
+    private EmailNotificationService emailNotificationService;
     private CourseService courseService;
 
     @BeforeEach
     public void setup() {
         courseRepository = mock(CourseRepository.class);
         userRepository = mock(UserRepository.class);
+        notificationRepository = mock(NotificationRepository.class);
+        emailNotificationService = mock(EmailNotificationService.class);
+        courseService = new CourseService(courseRepository, userRepository, notificationRepository, emailNotificationService);
     }
 
     @Test
@@ -129,17 +136,17 @@ public class CourseServiceTest {
         Course course = new Course();
         course.setId(1L);
 
+        User instructor = new User(2L, "Instructor", "instructor@example.com", "instr123", Role.Instructor);
+        course.setInstructor(instructor);
         User student = new User(3L, "Student", "student@example.com", "stud123", Role.Student);
-
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
         when(userRepository.findById(3L)).thenReturn(Optional.of(student));
         when(courseRepository.save(any(Course.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
         courseService.enrollStudent(1L, 3L);
-
         assertTrue(course.getStudents().contains(student));
         verify(courseRepository, times(1)).save(course);
     }
+
 
     @Test
     public void testGetEnrolledStudents_Success() {
