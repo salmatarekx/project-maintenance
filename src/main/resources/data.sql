@@ -27,9 +27,9 @@ VALUES ( 'Java Basics Quiz', 1 ),
 --
 --
 -- Insert statements for Assignment
-INSERT INTO assignment ( title, course_id)
-VALUES ('Java Project 1', 1),
-       ( 'Spring Boot Project', 2);
+INSERT INTO assignment ( title, course_id,instructor_id)
+VALUES ('Java Project 1', 1,2),
+       ( 'Spring Boot Project', 2,2);
 
 -- Insert statements for Assignment
 INSERT INTO assignment_grades ( student_id , assignment_id , grade, feedback)
