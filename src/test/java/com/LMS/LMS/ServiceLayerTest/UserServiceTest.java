@@ -1,5 +1,6 @@
 package com.LMS.LMS.ServiceLayerTest;
 
+import com.LMS.LMS.DTO.LoginReq;
 import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
@@ -54,6 +55,29 @@ public class UserServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.Register(req));
         assertEquals("Email is already Exist!", exception.getMessage());
         verify(repository, never()).save(any(User.class)); // save is never called
+
+    }
+    @Test
+    public void Success_Login(){
+
+//        String email = "test@example.com";
+//        String password = "password123";
+//
+//        LoginReq req = new LoginReq(email, password);
+//        User user = new User();
+//        user.setEmail(email);
+//        user.setPassword(password);
+//
+//        when(UserRepository.(email)).thenReturn(Optional.of(user));
+//
+//        // Act
+//        User result = userService.Login(req);
+//
+//        // Assert
+//        assertNotNull(result);
+//        assertEquals(email, result.getEmail());
+//        assertEquals(password, result.getPassword());
+//        verify(userRepository, times(1)).findByEmail(email)
 
     }
 
