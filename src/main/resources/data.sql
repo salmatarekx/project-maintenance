@@ -20,23 +20,56 @@ VALUES ( 'Introduction to Java', 1),
        ( 'REST API Development', 2);
 --
 -- Insert statements for Quiz
-INSERT INTO quiz ( title, course_id )
-VALUES ( 'Java Basics Quiz', 1 ),
-       ( 'Java Advanced Quiz', 1 ),
-       ( 'Spring Boot Quiz', 2 );
+INSERT INTO QUIZ (
+    COURSE_ID,
+    END_TIME,
+    ID,
+    MAX_ATTEMPTS,
+    MAX_SCORE,
+    START_TIME,
+    TIME_LIMIT,
+    DESCRIPTION,
+    TITLE
+) VALUES
+(1, '2023-09-30 23:59:59', 1, 3, 50, '2023-09-30 20:00:00', 60, 'Java Basics quiz', 'Java Quiz'),
+(2, '2023-12-01 23:59:59', 2, 3, 50, '2023-12-01 20:00:00', 60, 'Spring Boot quiz', 'Spring Boot Quiz');
 --
 --
 -- Insert statements for Assignment
-INSERT INTO assignment ( title, course_id)
-VALUES ('Java Project 1', 1),
-       ( 'Spring Boot Project', 2);
+INSERT INTO ASSIGNMENT (
+    COURSE_ID,
+    DUE_DATE,
+    ID,
+    INSTRUCTOR_ID,
+    MAX_SCORE,
+    DESCRIPTION,
+    TITLE
+) VALUES
+(1, '2023-12-15 23:59:59', 1, 2, 100, 'Java Basics final project', 'Java Project'),
+(2, '2023-11-20 23:59:59', 2, 2, 100, 'Spring Boot application', 'Spring Boot Project'),
+(3, '2023-10-10 23:59:59', 3, 2, 100, 'Software architecture analysis', 'Architecture Analysis'),
+(1, '2023-09-30 23:59:59', 4, 2, 50, 'Java Basics quiz', 'Java Quiz'),
+(2, '2023-12-01 23:59:59', 5, 2, 50, 'Spring Boot quiz', 'Spring Boot Quiz');
 
 -- Insert statements for Assignment
-INSERT INTO assignment_grades ( student_id , assignment_id , grade, feedback)
-VALUES (3, 1,  'A+', 'Excellent'),
-       (4, 1,  'B', 'Good'),
-       (4, 2,  'B+', 'Good job!'),
-       ( 5, 1, 'A', 'Well done!');
+INSERT INTO ASSIGNMENT_GRADES (
+    IS_LATE,
+    ASSIGNMENT_ID,
+    ID,
+    STUDENT_ID,
+    SUBMISSION_DATE,
+    FEEDBACK,
+    FILE_NAME,
+    FILE_TYPE,
+    GRADE,
+    SUBMISSION_CONTENT,
+    FILE_DATA
+) VALUES
+(FALSE, 1, 1, 3, '2023-12-14 20:00:00', 'Great job!', 'java_project.zip', 'application/zip', 95, 'Java project content', NULL),
+(TRUE, 2, 2, 3, '2023-11-21 10:00:00', 'Submitted late', 'spring_boot_project.zip', 'application/zip', 85, 'Spring Boot project content', NULL),
+(FALSE, 3, 3, 3, '2023-10-09 15:00:00', 'Excellent analysis', 'architecture_analysis.pdf', 'application/pdf', 90, 'Architecture analysis content', NULL),
+(FALSE, 4, 4, 4, '2023-09-29 18:00:00', 'Good effort', 'java_quiz.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 45, 'Java quiz answers', NULL),
+(TRUE, 5, 5, 5, '2023-12-02 12:00:00', 'Late submission', 'spring_boot_quiz.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 40, 'Spring Boot quiz answers', NULL);
 --
 
 
@@ -52,52 +85,37 @@ VALUES ( 3, 1, true),
 
 
 -- Insert statements for QuizScore
-INSERT INTO quiz_grades ( quiz_id, student_id, grade , feedback)
-VALUES ( 1, 3, 'B' , 'Good Job'),
-       ( 2, 3, 'A+' , 'Excellent'),
-       ( 2, 4, 'A+' , 'Excellent'),
-       ( 3, 5, 'A' , 'Well done');
+INSERT INTO QUIZ_GRADES (
+    ATTEMPT_NUMBER,
+    END_TIME,
+    ID,
+    QUIZ_ID,
+    START_TIME,
+    STUDENT_ID,
+    ANSWERS,
+    FEEDBACK,
+    GRADE
+) VALUES
+(1, '2023-09-30 21:00:00', 1, 1, '2023-09-30 20:00:00', 3, 'A,B,C,D', 'Good understanding of Java basics', '45'),
+(1, '2023-12-01 21:00:00', 2, 2, '2023-12-01 20:00:00', 3, 'C,D,A,B', 'Excellent work on Spring Boot', '50'),
+(1, '2023-09-30 21:00:00', 3, 1, '2023-09-30 20:00:00', 4, 'A,C,B,D', 'Needs improvement in Java basics', '30'),
+(1, '2023-12-01 21:00:00', 4, 2, '2023-12-01 20:00:00', 4, 'D,C,B,A', 'Good effort on Spring Boot', '40'),
+(1, '2023-09-30 21:00:00', 5, 1, '2023-09-30 20:00:00', 5, 'B,A,D,C', 'Satisfactory performance in Java basics', '35');
 ---- Insert statements for Assignment_Task
-INSERT INTO ASSIGNMENT_TASK (ID, ASSIGNMENT_ID, TASK_DESCRIPTION, EXPECTED_OUTPUT, POINTS, TASK_TYPE, ADDITIONAL_RESOURCES)
-VALUES
-(1, 1, 'Create a Java class named "Calculator" with methods for basic arithmetic operations (add, subtract, multiply, divide).',
-    'Calculator class should have four public methods: add(double a, double b), subtract(double a, double b), multiply(double a, double b), and divide(double a, double b)',
-    20,
-    'CODE',
-    'https://docs.oracle.com/javase/tutorial/java/concepts/class.html'),
-
-(2, 1, 'Implement a method that checks if a given string is a palindrome.',
-    'Method should return true for inputs like "radar" and "A man a plan a canal Panama"',
-    15,
-    'CODE',
-    'https://www.geeksforgeeks.org/java-program-to-check-whether-a-string-is-a-palindrome/'),
-
-(3, 1, 'Write a detailed explanation of how garbage collection works in Java.',
-    'Cover topics including: Mark and Sweep algorithm, Generational Garbage Collection, and Memory Leaks',
-    25,
-    'WRITING',
-    'https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html');
-
-INSERT INTO ASSIGNMENT_TASK (ID, ASSIGNMENT_ID, TASK_DESCRIPTION, EXPECTED_OUTPUT, POINTS, TASK_TYPE, ADDITIONAL_RESOURCES)
-VALUES
-(4, 2, 'Create a REST API endpoint that handles CRUD operations for a "Product" entity.',
-    'Implement GET, POST, PUT, and DELETE endpoints with proper error handling and status codes',
-    30,
-    'CODE',
-    'https://spring.io/guides/tutorials/rest/'),
-
-(5, 2, 'Implement proper validation for the Product entity using Spring Validation.',
-    'Add validation for: name (not empty, max 100 chars), price (positive number), category (from enum list)',
-    25,
-    'CODE',
-    'https://www.baeldung.com/spring-boot-bean-validation'),
-
-(6, 2, 'Write unit tests for the Product controller using MockMvc.',
-    'Achieve at least 80% test coverage for the ProductController class',
-    20,
-    'CODE',
-    'https://spring.io/guides/gs/testing-web/');
-
+INSERT INTO ASSIGNMENT_TASK (
+    POINTS,
+    ASSIGNMENT_ID,
+    ID,
+    ADDITIONAL_RESOURCES,
+    EXPECTED_OUTPUT,
+    TASK_DESCRIPTION,
+    TASK_TYPE
+) VALUES
+(20, 1, 1, 'Java documentation', 'Working Java application', 'Implement a basic Java program', 'Programming'),
+(25, 2, 2, 'Spring Boot guide', 'Functional Spring Boot app', 'Create a Spring Boot application', 'Programming'),
+(30, 3, 3, 'Architecture patterns book', 'Detailed analysis report', 'Analyze architectural styles', 'Research'),
+(10, 4, 4, 'Java quiz guide', 'Correct answers', 'Complete the Java Basics quiz', 'Quiz'),
+(15, 5, 5, 'Spring Boot quiz guide', 'Correct answers', 'Complete the Spring Boot quiz', 'Quiz');
 -- Insert statements for Question
 INSERT INTO QUESTION ( QUIZ_ID, QUESTION_TEXT, OPTIONA, OPTIONB, OPTIONC, OPTIOND, CORRECT_ANSWER, POINTS)
 VALUES
