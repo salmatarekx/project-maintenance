@@ -4,6 +4,7 @@ import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.Role;
 import com.LMS.LMS.ModelLayer.User;
+import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
 import com.LMS.LMS.RepositoryLayer.NotificationRepository;
@@ -26,6 +27,7 @@ public class CourseServiceTest {
 
     private CourseRepository courseRepository;
     private UserRepository userRepository;
+    private AssignmentRepo assignmentRepo;
     private NotificationRepository notificationRepository;
     private EmailNotificationService emailNotificationService;
     private CourseService courseService;
@@ -34,9 +36,10 @@ public class CourseServiceTest {
     public void setup() {
         courseRepository = mock(CourseRepository.class);
         userRepository = mock(UserRepository.class);
+        assignmentRepo = mock(AssignmentRepo.class);
         notificationRepository = mock(NotificationRepository.class);
         emailNotificationService = mock(EmailNotificationService.class);
-        courseService = new CourseService(courseRepository, userRepository, notificationRepository, emailNotificationService);
+        courseService = new CourseService(courseRepository, userRepository, assignmentRepo, notificationRepository, emailNotificationService);
     }
 
     @Test

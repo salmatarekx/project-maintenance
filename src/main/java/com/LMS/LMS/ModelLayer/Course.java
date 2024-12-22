@@ -28,6 +28,9 @@ public class Course {
     @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assignments;
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -81,5 +84,9 @@ public class Course {
     }
     public void setInstructor(User instructor) {
         this.instructor = instructor;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
     }
 }

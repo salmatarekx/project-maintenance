@@ -73,7 +73,6 @@ public class StudentQuizAssignmentService {
         studentNotification.setMessage("Your assignment '" + assignment.getTitle() + "' has been graded. Your grade: " + assignmentGrades.getGrade());
         studentNotification.setType("ASSIGNMENT_GRADED");
         notificationRepository.save(studentNotification);
-
         return assignmentGrades ;
     }
 

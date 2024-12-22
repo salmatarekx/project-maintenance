@@ -1,12 +1,9 @@
 package com.LMS.LMS.ServiceLayer;
-
 import com.LMS.LMS.DTO.CourseDTO;
-import com.LMS.LMS.ModelLayer.Course;
-import com.LMS.LMS.ModelLayer.User;
-import com.LMS.LMS.ModelLayer.Role;
-import com.LMS.LMS.ModelLayer.Notification;
+import com.LMS.LMS.ModelLayer.*;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
+import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
 import com.LMS.LMS.RepositoryLayer.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,14 +17,16 @@ public class CourseService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final EmailNotificationService emailNotificationService;
+    private final AssignmentRepo assignmentRepo;
 
     @Autowired
-    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository,
+    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository,@Lazy AssignmentRepo assignmentRepo,
                          @Lazy NotificationRepository notificationRepository, @Lazy EmailNotificationService emailNotificationService) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.notificationRepository = notificationRepository;
         this.emailNotificationService = emailNotificationService;
+        this.assignmentRepo = assignmentRepo;
     }
 
     public Course createCourse(CourseDTO courseDTO, User currentUser) {
@@ -97,7 +96,9 @@ public class CourseService {
                 !course.getInstructor().getID().equals(currentUser.getID())) {
             throw new RuntimeException("You do not have permission to delete this course");
         }
-
+        for (Assignment assignment : course.getAssignments()) {
+            assignmentRepo.delete(assignment);
+        }
         courseRepository.deleteById(id);
     }
 
