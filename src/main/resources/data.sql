@@ -1,5 +1,5 @@
 -- -- Insert statements for User
-INSERT INTO Users ( User_Name, Password, role, Email)
+INSERT INTO Users ( ID,User_Name, Password, role, Email)
 VALUES ( 'admin', 'admin123', 'ADMIN', 'admin@example.com'),
        ( 'instructor1', 'instr123', 'INSTRUCTOR', 'instr1@example.com'),
        ( 'student1', 'stud123', 'STUDENT', 'student1@example.com'),
@@ -27,9 +27,9 @@ VALUES ( 'Java Basics Quiz', 1 ),
 --
 --
 -- Insert statements for Assignment
-INSERT INTO assignment ( title, course_id)
-VALUES ('Java Project 1', 1),
-       ( 'Spring Boot Project', 2);
+INSERT INTO assignment ( title, course_id,instructor_id)
+VALUES ('Java Project 1', 1,2),
+       ( 'Spring Boot Project', 2,2);
 
 -- Insert statements for Assignment
 INSERT INTO assignment_grades ( student_id , assignment_id , grade, feedback)
