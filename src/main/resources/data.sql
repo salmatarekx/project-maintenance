@@ -1,5 +1,5 @@
 -- -- Insert statements for User
-INSERT INTO Users ( ID,User_Name, Password, role, Email)
+INSERT INTO Users (User_Name, Password, role, Email)
 VALUES ( 'admin', 'admin123', 'ADMIN', 'admin@example.com'),
        ( 'instructor1', 'instr123', 'INSTRUCTOR', 'instr1@example.com'),
        ( 'student1', 'stud123', 'STUDENT', 'student1@example.com'),
@@ -36,26 +36,19 @@ INSERT INTO QUIZ (
 --
 --
 -- Insert statements for Assignment
-<<<<<<< HEAD
 INSERT INTO assignment ( title, course_id,instructor_id)
 VALUES ('Java Project 1', 1,2),
        ( 'Spring Boot Project', 2,2);
-=======
+
 INSERT INTO ASSIGNMENT (
-    COURSE_ID,
-    DUE_DATE,
-    ID,
-    INSTRUCTOR_ID,
-    MAX_SCORE,
-    DESCRIPTION,
-    TITLE
+    COURSE_ID, DUE_DATE, INSTRUCTOR_ID, MAX_SCORE, DESCRIPTION, TITLE
 ) VALUES
-(1, '2023-12-15 23:59:59', 1, 2, 100, 'Java Basics final project', 'Java Project'),
-(2, '2023-11-20 23:59:59', 2, 2, 100, 'Spring Boot application', 'Spring Boot Project'),
-(3, '2023-10-10 23:59:59', 3, 2, 100, 'Software architecture analysis', 'Architecture Analysis'),
-(1, '2023-09-30 23:59:59', 4, 2, 50, 'Java Basics quiz', 'Java Quiz'),
-(2, '2023-12-01 23:59:59', 5, 2, 50, 'Spring Boot quiz', 'Spring Boot Quiz');
->>>>>>> b9759335a1fb71f51f4b2145174b3dfcb8691548
+      (1, '2023-12-15 23:59:59', 2, 100, 'Java Basics final project', 'Java Project'),
+      (2, '2023-11-20 23:59:59', 2, 100, 'Spring Boot application', 'Spring Boot Project'),
+      (1, '2023-10-10 23:59:59', 2, 100, 'Software architecture analysis', 'Architecture Analysis'),
+      (1, '2023-09-30 23:59:59', 2, 50, 'Java Basics quiz', 'Java Quiz'),
+      (2, '2023-12-01 23:59:59', 2, 50, 'Spring Boot quiz', 'Spring Boot Quiz');
+
 
 -- Insert statements for Assignment
 INSERT INTO ASSIGNMENT_GRADES (
