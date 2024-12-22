@@ -35,7 +35,7 @@ public class NotificationService {
     }
 
     public List<Notification> getInstructorNotifications(Long instructorId) {
-        return notificationRepository.findByTypeAndSenderId("ENROLLMENT_CONFIRMATION", instructorId);
+        return notificationRepository.findByTypeAndSenderId("ENROLLMENT_CONFIRMATION",instructorId );
     }
 
     public void markAsRead(Long id) {

@@ -4,8 +4,10 @@ import com.LMS.LMS.DTO.CourseDTO;
 import com.LMS.LMS.ModelLayer.Course;
 import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ModelLayer.Role;
+import com.LMS.LMS.ModelLayer.Notification;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
+import com.LMS.LMS.RepositoryLayer.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -16,14 +18,16 @@ import java.util.List;
 public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
-
-    private final EmailNotificationService EmailnotificationService ;
+    private final NotificationRepository notificationRepository;
+    private final EmailNotificationService emailNotificationService;
 
     @Autowired
-    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository , @Lazy EmailNotificationService notificationService) {
+    public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository,
+                         @Lazy NotificationRepository notificationRepository, @Lazy EmailNotificationService emailNotificationService) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
-        this.EmailnotificationService = notificationService ;
+        this.notificationRepository = notificationRepository;
+        this.emailNotificationService = emailNotificationService;
     }
 
     public Course createCourse(CourseDTO courseDTO, User currentUser) {
@@ -98,13 +102,11 @@ public class CourseService {
     }
 
     public void enrollStudent(Long courseId, Long studentId) {
-
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
 
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
-
 
         // Verify student role
         if (student.getRole() != Role.Student) {
@@ -118,8 +120,25 @@ public class CourseService {
 
         course.getStudents().add(student);
         courseRepository.save(course);
-        EmailnotificationService.sendEnrollmentConfirmation(student.getEmail() ,course.getTitle());
 
+        // Send email notification for enrollment confirmation
+        emailNotificationService.sendEnrollmentConfirmation(student.getEmail(), course.getTitle());
+
+        // Create notifications for the student
+        Notification studentNotification = new Notification();
+        studentNotification.setRecipientId(student.getID());
+        studentNotification.setSenderId(course.getInstructor().getID());  // Instructor as the sender
+        studentNotification.setMessage("You have successfully enrolled in the course: " + course.getTitle());
+        studentNotification.setType("ENROLLMENT_CONFIRMATION");
+        notificationRepository.save(studentNotification);
+
+        // Create notifications for the instructor
+        Notification instructorNotification = new Notification();
+        instructorNotification.setRecipientId(course.getInstructor().getID());
+        instructorNotification.setSenderId(student.getID());  // Student as the sender
+        instructorNotification.setMessage("A student has enrolled in your course: " + course.getTitle());
+        instructorNotification.setType("STUDENT_ENROLLMENT");
+        notificationRepository.save(instructorNotification);
     }
 
     public List<User> getEnrolledStudents(Long courseId) {
