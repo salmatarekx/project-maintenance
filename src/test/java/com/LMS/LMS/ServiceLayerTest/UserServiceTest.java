@@ -54,7 +54,7 @@ public class UserServiceTest {
         when(repository.findByEmail(req.getEmail())).thenReturn(Optional.of(new User()));
         RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.Register(req));
         assertEquals("Email is already Exist!", exception.getMessage());
-        verify(repository, never()).save(any(User.class)); // save is never called
+        verify(repository, never()).save(any(User.class));
 
     }
     @Test
