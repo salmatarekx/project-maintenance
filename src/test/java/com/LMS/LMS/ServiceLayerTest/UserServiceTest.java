@@ -60,26 +60,40 @@ public class UserServiceTest {
     @Test
     public void Success_Login(){
 
-//        String email = "test@example.com";
-//        String password = "password123";
-//
-//        LoginReq req = new LoginReq(email, password);
-//        User user = new User();
-//        user.setEmail(email);
-//        user.setPassword(password);
-//
-//        when(UserRepository.(email)).thenReturn(Optional.of(user));
-//
-//        // Act
-//        User result = userService.Login(req);
-//
-//        // Assert
-//        assertNotNull(result);
-//        assertEquals(email, result.getEmail());
-//        assertEquals(password, result.getPassword());
-//        verify(userRepository, times(1)).findByEmail(email)
+        String email = "test@gmail.com";
+        String password = "123";
+
+        LoginReq req = new LoginReq(email, password);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+
+        when(repository.findByEmail(email)).thenReturn(Optional.of(user));
+
+
+        User result = userService.Login(req);
+
+        assertNotNull(result);
+        assertEquals(email, result.getEmail());
+        assertEquals(password, result.getPassword());
+        verify(repository, times(1)).findByEmail(email);
 
     }
+    @Test
+    void testLogin_InvalidEmail() {
+
+        String email = "mail@com";
+        String password = "password123";
+
+        LoginReq req = new LoginReq(email, password);
+
+        when(repository.findByEmail(email)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.Login(req));
+        assertEquals("Invalid Email", exception.getMessage());
+        verify(repository, times(1)).findByEmail(email);
+    }
+
 
 
 }

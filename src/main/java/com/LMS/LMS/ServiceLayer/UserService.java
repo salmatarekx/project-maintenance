@@ -43,9 +43,12 @@ public class UserService {
     }
 
     public User Login(LoginReq req) {
-        User user = userRepository.findByEmail(req.GetEmail()).orElseThrow(() -> new RuntimeException("Invalid Email"));
-        if (!user.getPassword().equals(req.getPassword())) {
-            throw new RuntimeException("INVALID Password"); // ###Problem
+        User user = userRepository.findByEmail(req.getEmail()).orElse(null);
+        if (user == null){
+            throw new RuntimeException("Invalid Email");
+        }
+        else if (!user.getPassword().equals(req.getPassword())) {
+            throw new RuntimeException("INVALID Password");
         }
         return user ;
     }
@@ -58,20 +61,31 @@ public class UserService {
             throw new RuntimeException("Profile not found!");
         }
     }
-    public User UpdateProfile(Long id,UserRegistration userRegistration){
+    public User UpdateProfile(Long id, UserRegistration userRegistration) {
         User user = userRepository.findById(id).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new RuntimeException("Profile not found!");
         }
-        if (userRegistration.getPassword() != null && !userRegistration.getPassword().isEmpty() && !userRegistration.getUsername().isEmpty() && userRegistration.getRole()!=null && !userRegistration.getEmail().isEmpty()) {
+
+        if (userRegistration.getEmail() != null && !userRegistration.getEmail().isEmpty()) {
+            Optional<User> existingUserWithEmail = userRepository.findByEmail(userRegistration.getEmail());
+            if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getID().equals(id)) {
+                throw new RuntimeException("Email is already in use by another user!");
+            }
+        }
+
+        if (userRegistration.getPassword() != null && !userRegistration.getPassword().isEmpty() &&
+                !userRegistration.getUsername().isEmpty() && userRegistration.getRole() != null) {
+
             user.setPassword(userRegistration.getPassword());
             user.setUserName(userRegistration.getUsername());
             user.setEmail(userRegistration.getEmail());
             user.setRole(userRegistration.getRole());
-            user.setPassword(userRegistration.getPassword());
         }
+
         return userRepository.save(user);
     }
+
 
 
 

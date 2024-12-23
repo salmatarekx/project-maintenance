@@ -21,7 +21,7 @@ public class AdminUserController {
     public ResponseEntity<String> CreateUser(@RequestBody UserRegistration userRegistration){
 
           adminUserService.CreateUser(userRegistration);
-          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created"+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
+          return ResponseEntity.status(HttpStatus.CREATED).body("Admin created "+userRegistration.getRole() + " " + userRegistration.getUsername() + " Successfully") ;
 
     }
 }
