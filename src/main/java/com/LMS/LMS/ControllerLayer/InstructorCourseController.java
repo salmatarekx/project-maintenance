@@ -66,6 +66,21 @@ public class InstructorCourseController {
         return ResponseEntity.ok(performanceData);
     }
 
+    @PostMapping("/generate-report")
+    public ResponseEntity<String> generateReport(@RequestParam Long studentId, @RequestParam Long courseId) {
+        Course course = courseService.getAllCourses().stream()
+                .filter(c -> (c.getId() == courseId))
+                .findFirst().orElse(null);
+
+        User student = userService.getUserById(studentId).orElse(null);
+
+        if (course == null || student == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Map<String, Object> performanceData = performanceTrackingService.getSimplifiedPerformance(student, course);
+        performanceTrackingService.generateExcelReport(student, course);
+        return ResponseEntity.ok("Report generated successfully.");
+    }
     @Autowired
     private QuizService quizService;
 

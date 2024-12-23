@@ -25,4 +25,5 @@ public class AdminCourseController {
         adminCourseService.deleteCourse(CourseId , currentUser);
         return ResponseEntity.ok("Course Deleted successfully");
     }
+
 }
