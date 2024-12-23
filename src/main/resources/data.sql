@@ -17,7 +17,9 @@ INSERT INTO lesson ( topic, course_id)
 VALUES ( 'Introduction to Java', 1),
        ( 'OOP Basics', 1),
        ( 'Spring Boot Setup', 2),
-       ( 'REST API Development', 2);
+       ( 'Spring Boot Setup', 2),
+       ( 'Design patterns', 3),
+       ( 'Design patterns2', 3);
 --
 -- Insert statements for Quiz
 INSERT INTO QUIZ (
@@ -38,6 +40,7 @@ INSERT INTO QUIZ (
 -- Insert statements for Assignment
 INSERT INTO assignment ( title, course_id,instructor_id)
 VALUES ('Java Project 1', 1,2),
+       ('design patterns', 3,2),
        ( 'Spring Boot Project', 2,2);
 
 INSERT INTO ASSIGNMENT (
@@ -47,7 +50,8 @@ INSERT INTO ASSIGNMENT (
       (2, '2023-11-20 23:59:59', 2, 100, 'Spring Boot application', 'Spring Boot Project'),
       (1, '2023-10-10 23:59:59', 2, 100, 'Software architecture analysis', 'Architecture Analysis'),
       (1, '2023-09-30 23:59:59', 2, 50, 'Java Basics quiz', 'Java Quiz'),
-      (2, '2023-12-01 23:59:59', 2, 50, 'Spring Boot quiz', 'Spring Boot Quiz');
+      (2, '2023-12-01 23:59:59', 2, 50, 'Spring Boot quiz', 'Spring Boot Quiz'),
+      (3, '2023-12-04 23:59:59', 2, 50, 'design patterns', 'design patterns');
 
 
 -- Insert statements for Assignment
@@ -77,10 +81,22 @@ INSERT INTO ASSIGNMENT_GRADES (
 INSERT INTO attendance ( student_id, lesson_id, attend)
 VALUES ( 3, 1, true),
        ( 3, 2, false),
+       ( 3, 5, false),
+       ( 3, 6, false),
        ( 3, 3, true),
-       ( 4, 3, true),
-       ( 4, 3, true),
-       ( 5, 4, true);
+       ( 3, 4, true),
+       ( 4, 1, true),
+       ( 4, 2, true),
+       ( 4, 3, false),
+       ( 4, 4, true),
+       ( 4, 5, true),
+       ( 4, 6, true),
+       ( 5, 1, true),
+       ( 5, 2, true),
+       ( 5, 3, false),
+       ( 5, 4, true),
+       ( 5, 5, true),
+       ( 5, 6, false);
 
 
 -- Insert statements for QuizScore

@@ -33,7 +33,7 @@ public class TrackingPerformanceService {
         // Attendance summary
         List<Attendance> attendanceRecords = attendanceRepo.findAll().stream()
                 .filter(a -> a.getStudent().equals(student) && a.getLesson().getCourse().equals(course))
-                .collect(Collectors.toList());
+                .toList();
         long attendedSessions = attendanceRecords.stream().filter(Attendance::isAttend).count();
         long totalSessions = attendanceRecords.size();
         performanceData.put("attendance", String.format("%d/%d sessions", attendedSessions, totalSessions));
