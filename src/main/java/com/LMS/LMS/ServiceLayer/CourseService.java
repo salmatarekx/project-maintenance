@@ -96,10 +96,13 @@ public class CourseService {
                 !course.getInstructor().getID().equals(currentUser.getID())) {
             throw new RuntimeException("You do not have permission to delete this course");
         }
-        for (Assignment assignment : course.getAssignments()) {
-            assignmentRepo.delete(assignment);
+        if (course.getAssignments() != null) {
+            for (Assignment assignment : course.getAssignments()) {
+                assignmentRepo.delete(assignment);
+            }
+
+            courseRepository.deleteById(id);
         }
-        courseRepository.deleteById(id);
     }
 
     public void enrollStudent(Long courseId, Long studentId) {

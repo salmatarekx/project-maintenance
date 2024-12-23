@@ -1,5 +1,6 @@
 package com.LMS.LMS.ModelLayer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonIgnore // Prevents serialization of course to avoid infinite loop
     private Course course;
 
 //    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
