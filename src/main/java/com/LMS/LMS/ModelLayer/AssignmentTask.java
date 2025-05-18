@@ -1,7 +1,6 @@
 package com.LMS.LMS.ModelLayer;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 public class AssignmentTask {
@@ -11,21 +10,12 @@ public class AssignmentTask {
 
     @ManyToOne
     @JoinColumn(name = "assignment_id")
-    @NotNull(message = "Assignment must be specified")
     private Assignment assignment;
 
-    @NotBlank(message = "Task description cannot be blank")
     private String taskDescription;
-
     private String expectedOutput;
-
-    @NotNull(message = "Points must be specified")
-    @Min(value = 0, message = "Points must be zero or positive")
     private Integer points;
-
-    @NotBlank(message = "Task type cannot be blank")
     private String taskType; // e.g., "CODE", "WRITING", "PROBLEM_SOLVING"
-
     private String additionalResources; // Optional links or references
 
     // Default constructor

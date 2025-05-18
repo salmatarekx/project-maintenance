@@ -3,7 +3,6 @@ package com.LMS.LMS.ControllerLayer;
 import com.LMS.LMS.DTO.NotificationDTO;
 import com.LMS.LMS.ModelLayer.Notification;
 import com.LMS.LMS.ServiceLayer.NotificationService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class NotificationController {
     }
 
     @PostMapping("/CreateNotification")
-    public ResponseEntity<Notification> CreateNotification(@Valid @RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<Notification> CreateNotification(@RequestBody NotificationDTO notificationDTO) {
         Notification notification = notificationService.createNotification(notificationDTO);
         return ResponseEntity.ok(notification);
     }

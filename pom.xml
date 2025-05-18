@@ -129,16 +129,7 @@
 				<artifactId>commons-compress</artifactId>
 				<version>1.21</version>
 			</dependency>
-		<dependency>
-			<groupId>jakarta.validation</groupId>
-			<artifactId>jakarta.validation-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
-			<scope>compile</scope>
-		</dependency>
+
 
 
 	</dependencies>
@@ -158,6 +149,7 @@
 					</annotationProcessorPaths>
 					<source>8</source>
 					<target>8</target>
+					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>

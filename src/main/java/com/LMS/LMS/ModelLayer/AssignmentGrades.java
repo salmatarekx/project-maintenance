@@ -1,44 +1,32 @@
 package com.LMS.LMS.ModelLayer;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class AssignmentGrades {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(optional = false) // make student required
-    @NotNull(message = "Student cannot be null")
-    private User student;
-
-    @ManyToOne(optional = false) // make assignment required
-    @NotNull(message = "Assignment cannot be null")
-    private Assignment assignment;
-
-    @NotBlank(message = "Grade cannot be blank")
-    private String grade;
-
-    private String feedback;
-
-    @PastOrPresent(message = "Submission date cannot be in the future")
-    private LocalDateTime submissionDate;
-
-    @Size(max = 10000, message = "Submission content too long")
-    private String submissionContent;
-
-    private Boolean isLate;
-
     private String fileName;
-
     private String fileType;
 
     @Lob
     @Column(name = "file_data", length = 10000000)
     private byte[] fileData;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private User student;
+
+    @ManyToOne
+    private Assignment assignment;
+
+    private String grade;
+    private String feedback;
+    private LocalDateTime submissionDate;
+    private String submissionContent;
+    private Boolean isLate;
 
     // Constructors
     public AssignmentGrades() {}
@@ -53,24 +41,19 @@ public class AssignmentGrades {
         this.feedback = feedback;
         this.submissionDate = submissionDate;
         this.submissionContent = submissionContent;
-        updateIsLate();
+        this.isLate = submissionDate != null && assignment != null &&
+                submissionDate.isAfter(assignment.getDueDate());
     }
 
     // Getters and Setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public User getStudent() { return student; }
-    public void setStudent(User student) {
-        this.student = student;
-    }
+    public void setStudent(User student) { this.student = student; }
 
     public Assignment getAssignment() { return assignment; }
-    public void setAssignment(Assignment assignment) {
-        this.assignment = assignment;
-        updateIsLate();
-    }
+    public void setAssignment(Assignment assignment) { this.assignment = assignment; }
 
     public String getGrade() { return grade; }
     public void setGrade(String grade) { this.grade = grade; }
@@ -85,7 +68,9 @@ public class AssignmentGrades {
     }
 
     public String getSubmissionContent() { return submissionContent; }
-    public void setSubmissionContent(String submissionContent) { this.submissionContent = submissionContent; }
+    public void setSubmissionContent(String submissionContent) {
+        this.submissionContent = submissionContent;
+    }
 
     public Boolean getIsLate() { return isLate; }
 
@@ -93,7 +78,6 @@ public class AssignmentGrades {
         this.isLate = submissionDate != null && assignment != null &&
                 submissionDate.isAfter(assignment.getDueDate());
     }
-
     public String getFileName() { return fileName; }
     public void setFileName(String fileName) { this.fileName = fileName; }
 
@@ -102,4 +86,5 @@ public class AssignmentGrades {
 
     public byte[] getFileData() { return fileData; }
     public void setFileData(byte[] fileData) { this.fileData = fileData; }
+
 }
