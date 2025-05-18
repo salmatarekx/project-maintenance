@@ -37,7 +37,7 @@ class NotificationServiceTest {
         notificationDTO.senderId = 2L;
         notificationDTO.message = "Test Notification";
         notificationDTO.type = "COURSE_UPDATED";
-        notificationDTO.isRead = false;
+        notificationDTO.setRead(false);
 
         Notification notification = new Notification();
         notification.setRecipientId(1L);
