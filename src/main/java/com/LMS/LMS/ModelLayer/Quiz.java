@@ -2,8 +2,8 @@ package com.LMS.LMS.ModelLayer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Quiz {
@@ -11,25 +11,36 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title cannot be blank")
     private String title;
+
+    @Size(max = 2000, message = "Description cannot exceed 2000 characters")
     private String description;
+
+    @NotNull(message = "Start time must be provided")
+    @FutureOrPresent(message = "Start time cannot be in the past")
     private LocalDateTime startTime;
+
+    @NotNull(message = "End time must be provided")
+    @Future(message = "End time must be in the future")
     private LocalDateTime endTime;
+
+    @NotNull(message = "Max attempts must be provided")
+    @Min(value = 1, message = "Max attempts must be at least 1")
     private Long maxAttempts = 1L;
+
+    @NotNull(message = "Time limit must be provided")
+    @Min(value = 1, message = "Time limit must be at least 1 minute")
     private Long timeLimit;
+
+    @NotNull(message = "Max score must be provided")
+    @Min(value = 0, message = "Max score cannot be negative")
     private Long maxScore;
 
-//    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
-//    private List<Question> questions;
-
-
-    @ManyToOne
-    @JoinColumn(name = "course_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore // Prevents serialization of course to avoid infinite loop
     private Course course;
-
-//    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
-//    private List<QuizGrades> grades;
 
     // Constructors
     public Quiz() {}
@@ -73,12 +84,6 @@ public class Quiz {
     public Long getMaxScore() { return maxScore; }
     public void setMaxScore(Long maxScore) { this.maxScore = maxScore; }
 
-    public Course getCourse() { return course ; }
+    public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
-
-//    public List<QuizGrades> getGrades() { return grades; }
-//    public void setGrades(List<QuizGrades> grades) { this.grades = grades; }
-
-//    public List<Question> getQuestions() { return questions; }
-//    public void setQuestions(List<Question> questions) { this.questions = questions; }
 }

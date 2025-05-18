@@ -2,11 +2,14 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.ServiceLayer.AssignmentGradesService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/assignment-grades")
+@Validated // enables validation on method parameters
 public class AssignmentGradesController {
 
     @Autowired
@@ -22,10 +26,14 @@ public class AssignmentGradesController {
 
     @PostMapping("/submit")
     public ResponseEntity<?> submitAssignment(
-            @RequestParam("assignmentId") Long assignmentId,
-            @RequestParam("studentId") Long studentId,
+            @RequestParam @NotNull(message = "Assignment ID is required") Long assignmentId,
+            @RequestParam @NotNull(message = "Student ID is required") Long studentId,
             @RequestParam("file") MultipartFile file) {
         try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("Uploaded file is empty");
+            }
+
             AssignmentGrades submission = gradesService.submitAssignment(assignmentId, studentId, file);
             return submission != null ?
                     ResponseEntity.ok(submission) :
@@ -39,7 +47,8 @@ public class AssignmentGradesController {
     }
 
     @GetMapping("/download/{submissionId}")
-    public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long submissionId) {
+    public ResponseEntity<byte[]> downloadSubmission(
+            @PathVariable @NotNull(message = "Submission ID is required") Long submissionId) {
         AssignmentGrades submission = gradesService.getAssignmentsGrades(submissionId)
                 .stream()
                 .findFirst()
@@ -56,18 +65,21 @@ public class AssignmentGradesController {
     }
 
     @PostMapping("/{submissionId}/grade")
-    public ResponseEntity<AssignmentGrades> gradeSubmission(
-            @PathVariable Long submissionId,
-            @RequestParam String grade,
-            @RequestParam String feedback) {
+    public ResponseEntity<?> gradeSubmission(
+            @PathVariable @NotNull(message = "Submission ID is required") Long submissionId,
+            @RequestParam @NotBlank(message = "Grade must not be blank") String grade,
+            @RequestParam @NotBlank(message = "Feedback must not be blank") String feedback) {
+
         AssignmentGrades graded = gradesService.gradeSubmission(submissionId, grade, feedback);
         return graded != null ?
                 ResponseEntity.ok(graded) :
-                ResponseEntity.notFound().build();
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Submission not found");
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<AssignmentGrades>> getStudentGrades(@PathVariable Long studentId) {
+    public ResponseEntity<List<AssignmentGrades>> getStudentGrades(
+            @PathVariable @NotNull(message = "Student ID is required") Long studentId) {
+
         List<AssignmentGrades> grades = gradesService.getAssignmentsGrades(studentId);
         return grades != null ?
                 ResponseEntity.ok(grades) :

@@ -2,6 +2,7 @@ package com.LMS.LMS.ModelLayer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,18 +11,29 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title cannot be blank")
+    @Size(max = 255, message = "Title must be at most 255 characters")
     private String title;
+
+    @Size(max = 2000, message = "Description must be at most 2000 characters")
     private String description;
+
+    @NotNull(message = "Due date is required")
+    @FutureOrPresent(message = "Due date cannot be in the past")
     private LocalDateTime dueDate;
+
+    @NotNull(message = "Max score is required")
+    @Positive(message = "Max score must be positive")
     private Long maxScore;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
-    @JsonIgnore // Prevents serialization of course to avoid infinite loop
+    @JsonIgnore // Prevent serialization to avoid infinite loop
     private Course course;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "instructor_id", nullable = false)
+    @NotNull(message = "Instructor is required")
     private User instructor;
 
     // Constructors
@@ -62,5 +74,4 @@ public class Assignment {
     public void setInstructor(User instructor) {
         this.instructor = instructor;
     }
-
 }

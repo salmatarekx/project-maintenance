@@ -1,18 +1,17 @@
 package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.DTO.CourseDTO;
-import com.LMS.LMS.DTO.UserRegistration;
 import com.LMS.LMS.ModelLayer.*;
 import com.LMS.LMS.RepositoryLayer.CourseRepository;
 import com.LMS.LMS.ServiceLayer.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,28 +19,25 @@ import java.util.Map;
 @RequestMapping("/InstructorCourse")
 public class InstructorCourseController {
     private final InstructorCourseService instructorCourseService;
-    private  final UserService userService;
+    private final UserService userService;
     private final CourseService courseService;
 
-    public InstructorCourseController(InstructorCourseService instructorCourseService, UserService userService,CourseService courseService) {
+    public InstructorCourseController(InstructorCourseService instructorCourseService, UserService userService, CourseService courseService) {
         this.instructorCourseService = instructorCourseService;
         this.userService = userService;
         this.courseService = courseService;
     }
 
-
     @PostMapping
-    public ResponseEntity<String>CreateCourse(@RequestBody  CourseDTO courseDTO, @RequestAttribute User user){
-        instructorCourseService.CreateCourse(courseDTO ,user);
+    public ResponseEntity<String> CreateCourse(@Valid @RequestBody CourseDTO courseDTO, @NotNull @RequestAttribute User user) {
+        instructorCourseService.CreateCourse(courseDTO, user);
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
-
     }
-    @DeleteMapping("/courses/{CourseId}/students/{StudentId}")
-    public ResponseEntity<String>RemoveStudentFromCourse(@PathVariable Long CourseId , @PathVariable Long StudentId)
-    {
-        instructorCourseService.removeStudentfromCourse(CourseId,StudentId);
-        return ResponseEntity.ok("Student removed successfully from course.");
 
+    @DeleteMapping("/courses/{CourseId}/students/{StudentId}")
+    public ResponseEntity<String> RemoveStudentFromCourse(@PathVariable Long CourseId, @PathVariable Long StudentId) {
+        instructorCourseService.removeStudentfromCourse(CourseId, StudentId);
+        return ResponseEntity.ok("Student removed successfully from course.");
     }
 
     @Autowired
@@ -49,11 +45,10 @@ public class InstructorCourseController {
 
     @GetMapping("/getStudentPerformance/{studentId}/{courseId}")
     public ResponseEntity<Map<String, Object>> getStudentPerformance(
-            @PathVariable Long studentId,@PathVariable Long courseId ) {
-
+            @PathVariable Long studentId, @PathVariable Long courseId) {
 
         Course course = courseService.getAllCourses().stream()
-                .filter(c -> (c.getId() == courseId))
+                .filter(c -> (c.getId().equals(courseId)))
                 .findFirst().orElse(null);
 
         User student = userService.getUserById(studentId).orElse(null);
@@ -67,9 +62,9 @@ public class InstructorCourseController {
     }
 
     @PostMapping("/generate-report")
-    public ResponseEntity<String> generateReport(@RequestParam Long studentId, @RequestParam Long courseId) {
+    public ResponseEntity<String> generateReport(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long courseId) {
         Course course = courseService.getAllCourses().stream()
-                .filter(c -> (c.getId() == courseId))
+                .filter(c -> (c.getId().equals(courseId)))
                 .findFirst().orElse(null);
 
         User student = userService.getUserById(studentId).orElse(null);
@@ -77,10 +72,10 @@ public class InstructorCourseController {
         if (course == null || student == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        Map<String, Object> performanceData = performanceTrackingService.getSimplifiedPerformance(student, course);
         performanceTrackingService.generateExcelReport(student, course);
         return ResponseEntity.ok("Report generated successfully.");
     }
+
     @Autowired
     private QuizService quizService;
 
@@ -88,9 +83,8 @@ public class InstructorCourseController {
     private CourseRepository courseRepository;
 
     @PostMapping("/createQuiz")
-    public ResponseEntity<Quiz> createQuiz(@RequestBody Map<String, Object> requestData) {
+    public ResponseEntity<Quiz> createQuiz(@Valid @RequestBody Map<String, Object> requestData) {
         try {
-            // Extract details from the request body
             String title = (String) requestData.get("title");
             String description = (String) requestData.get("description");
             LocalDateTime startTime = LocalDateTime.parse((String) requestData.get("startTime"));
@@ -100,7 +94,6 @@ public class InstructorCourseController {
             Long maxScore = Long.valueOf((Integer) requestData.get("maxScore"));
             Long courseId = Long.valueOf((Integer) requestData.get("courseId"));
 
-            // Fetch course from repository
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
 
@@ -118,11 +111,9 @@ public class InstructorCourseController {
 
             return ResponseEntity.ok(createdQuiz);
         } catch (Exception e) {
-            // Handle exceptions gracefully
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
 
     @GetMapping("/getAllQuizzes")
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
@@ -139,7 +130,7 @@ public class InstructorCourseController {
     @PostMapping("/startQuiz/{id}")
     public ResponseEntity<QuizGrades> startQuiz(
             @PathVariable Long id,
-            @RequestParam Long studentId) {
+            @RequestParam @NotNull Long studentId) {
         QuizGrades attempt = quizService.startQuiz(id, studentId);
         return attempt != null ?
                 ResponseEntity.ok(attempt) :
@@ -148,21 +139,19 @@ public class InstructorCourseController {
 
     @Autowired
     private AssignmentService assignmentService;
-    @PostMapping("/createAssignment")
-    public ResponseEntity<Assignment> createAssignment(@RequestBody Map<String, Object> requestData) {
-        try {
 
+    @PostMapping("/createAssignment")
+    public ResponseEntity<Assignment> createAssignment(@Valid @RequestBody Map<String, Object> requestData) {
+        try {
             String title = (String) requestData.get("title");
             String description = (String) requestData.get("description");
             LocalDateTime dueDate = LocalDateTime.parse((String) requestData.get("dueDate"));
             Long maxScore = Long.valueOf((Integer) requestData.get("maxScore"));
             Long courseId = Long.valueOf((Integer) requestData.get("courseId"));
 
-
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
 
-            // Create and populate assignment
             Assignment assignment = new Assignment();
             assignment.setTitle(title);
             assignment.setDescription(description);
@@ -170,12 +159,10 @@ public class InstructorCourseController {
             assignment.setMaxScore(maxScore);
             assignment.setCourse(course);
 
-            // Save assignment
             Assignment createdAssignment = assignmentService.createAssignment(assignment);
 
             return ResponseEntity.ok(createdAssignment);
         } catch (Exception e) {
-            // Handle any exceptions
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -189,20 +176,16 @@ public class InstructorCourseController {
     private StudentQuizAssignmentService studentQuizAssignmentService;
 
     @GetMapping("/getAssignmentGrade/{assignmentId}")
-    public ResponseEntity<List<AssignmentGrades>> viewAssignmentGrade(
-            @PathVariable Long assignmentId) {
+    public ResponseEntity<List<AssignmentGrades>> viewAssignmentGrade(@PathVariable Long assignmentId) {
         List<AssignmentGrades> grades = studentQuizAssignmentService.viewAssignmentGrade(assignmentId);
-        return grades != null ?
-                ResponseEntity.ok(grades) :
-                ResponseEntity.notFound().build();
+        return grades != null ? ResponseEntity.ok(grades) : ResponseEntity.notFound().build();
     }
+
     @Autowired
     private AssignmentTaskService taskService;
 
     @PostMapping("/addTaskToAssignment/{assignmentId}")
-    public ResponseEntity<AssignmentTask> addTaskToAssignment(
-            @PathVariable Long assignmentId,
-            @RequestBody Map<String, Object> taskData) {
+    public ResponseEntity<AssignmentTask> addTaskToAssignment(@PathVariable Long assignmentId, @Valid @RequestBody Map<String, Object> taskData) {
         try {
             Assignment assignment = assignmentService.getAssignment(assignmentId)
                     .orElseThrow(() -> new RuntimeException("Assignment not found"));
@@ -232,7 +215,7 @@ public class InstructorCourseController {
         }
     }
 
-    @DeleteMapping("deleteAssignmentTask/{taskId}")
+    @DeleteMapping("/deleteAssignmentTask/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         try {
             taskService.deleteTask(taskId);
@@ -241,23 +224,18 @@ public class InstructorCourseController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/getQuizGrades/{quizId}")
-    public ResponseEntity<List<QuizGrades>> viewQuizGrade(
-            @PathVariable Long quizId) {
-       List<QuizGrades> grades = studentQuizAssignmentService.viewQuizGrade(quizId);
-        return grades != null ?
-                ResponseEntity.ok(grades) :
-                ResponseEntity.notFound().build();
+    public ResponseEntity<List<QuizGrades>> viewQuizGrade(@PathVariable Long quizId) {
+        List<QuizGrades> grades = studentQuizAssignmentService.viewQuizGrade(quizId);
+        return grades != null ? ResponseEntity.ok(grades) : ResponseEntity.notFound().build();
     }
 
     @Autowired
     private QuestionService questionService;
 
-
     @PostMapping("/addQuestionsToQuiz/{quizId}")
-    public ResponseEntity<Question> addQuestionToQuiz(
-            @PathVariable Long quizId,
-            @RequestBody Map<String, Object> questionData) {
+    public ResponseEntity<Question> addQuestionToQuiz(@PathVariable Long quizId, @Valid @RequestBody Map<String, Object> questionData) {
         try {
             Quiz quiz = quizService.getQuiz(quizId).orElseThrow();
 
@@ -298,16 +276,16 @@ public class InstructorCourseController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("deleteAssignment/{Id}")
-    public ResponseEntity<String>DeleteAssignment(@PathVariable long Id){
+
+    @DeleteMapping("/deleteAssignment/{Id}")
+    public ResponseEntity<String> DeleteAssignment(@PathVariable long Id) {
         assignmentService.DeleteAssignment(Id);
-        return ResponseEntity.ok("Deleted Successfully") ;
+        return ResponseEntity.ok("Deleted Successfully");
     }
-    @DeleteMapping("deleteQuiz/{Id}")
-    public ResponseEntity<String>DeleteQuiz(@PathVariable long Id){
+
+    @DeleteMapping("/deleteQuiz/{Id}")
+    public ResponseEntity<String> DeleteQuiz(@PathVariable long Id) {
         quizService.DeleteQuiz(Id);
-        return ResponseEntity.ok("Deleted Successfully") ;
+        return ResponseEntity.ok("Deleted Successfully");
     }
-
-
 }
