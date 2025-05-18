@@ -2,11 +2,11 @@ package com.LMS.LMS.ControllerLayer;
 
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
 import com.LMS.LMS.ServiceLayer.AssignmentGradesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,25 +17,51 @@ import java.util.List;
 @RequestMapping("/api/assignment-grades")
 public class AssignmentGradesController {
 
-    @Autowired
-    private AssignmentGradesService gradesService;
+    private final AssignmentGradesService gradesService;
+
+    public AssignmentGradesController(AssignmentGradesService gradesService) {
+        this.gradesService = gradesService;
+    }
 
     @PostMapping("/submit")
-    public ResponseEntity<?> submitAssignment(
+    public ResponseEntity<Object> submitAssignment(
             @RequestParam("assignmentId") Long assignmentId,
-            @RequestParam("studentId") Long studentId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            AssignmentGrades submission = gradesService.submitAssignment(assignmentId, studentId, file);
-            return submission != null ?
-                    ResponseEntity.ok(submission) :
-                    ResponseEntity.badRequest().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing file upload: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            @RequestParam("studentId")    Long studentId,
+            @RequestParam("file")         MultipartFile file
+    ) throws IOException {
+
+        // empty‐file check
+        if (file.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("No file uploaded. Please attach a PDF or DOC file.");
         }
+
+        // type‐check
+        String ct = file.getContentType();
+        if (!gradesService.isAllowedFileType(ct)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Invalid file type. Only PDF and DOC files are allowed.");
+        }
+
+        // delegate
+        AssignmentGrades submission = gradesService
+                .submitAssignment(assignmentId, studentId, file);
+
+        return ResponseEntity.ok(submission);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<String> handleMissingParam(MissingServletRequestParameterException ex) {
+        if ("file".equals(ex.getParameterName())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("No file uploaded. Please attach a PDF or DOC file.");
+        }
+        return ResponseEntity
+                .badRequest()
+                .body("Required parameter '" + ex.getParameterName() + "' is missing");
     }
 
     @GetMapping("/download/{submissionId}")
