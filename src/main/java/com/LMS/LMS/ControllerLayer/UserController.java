@@ -45,5 +45,10 @@ public class UserController {
     public ResponseEntity<User>UpdateProfile(@PathVariable Long UserId, @RequestBody UserRegistration userRegistration){
        return ResponseEntity.ok(userService.UpdateProfile(UserId ,userRegistration));
     }
+
+    @GetMapping("/ViewAllProfiles")
+    public ResponseEntity<java.util.List<User>> viewAllProfiles() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
 }
 
