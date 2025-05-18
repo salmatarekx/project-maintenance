@@ -45,7 +45,7 @@ public class AssignmentService {
         }
         return null;
     }
-    public void DeleteAssignment(long id){
+    public void deleteAssignment(long id){
         Assignment assignment = assignmentRepo.findById(id).orElse(null);
         if (assignment != null)
         {

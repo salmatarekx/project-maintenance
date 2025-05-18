@@ -11,7 +11,7 @@ import java.util.List;
 public interface AssignmentGradesRepo extends JpaRepository<AssignmentGrades, Long> {
     List<AssignmentGrades> findByStudent(User student);
     List<AssignmentGrades> findByAssignment(Assignment assignment);
-
+    void deleteAllByAssignment(Assignment assignment);
     @Query("SELECT ag FROM AssignmentGrades ag WHERE ag.student = :student AND ag.assignment = :assignment")
     AssignmentGrades findByStudentAndAssignment(User student , Assignment assignment) ;
 

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/Users")
 public class UserController {
@@ -44,6 +46,12 @@ public class UserController {
     @PostMapping("UpdateProfile/{UserId}")
     public ResponseEntity<User>UpdateProfile(@PathVariable Long UserId, @RequestBody UserRegistration userRegistration){
        return ResponseEntity.ok(userService.UpdateProfile(UserId ,userRegistration));
+    }
+
+    @GetMapping("/ViewAllProfiles")
+    public ResponseEntity<List<User>> viewAllProfiles() {
+
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
 

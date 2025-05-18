@@ -1,12 +1,11 @@
 package com.LMS.LMS.ServiceLayer;
 
 import com.LMS.LMS.ModelLayer.AssignmentGrades;
-import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.ModelLayer.Assignment;
+import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.AssignmentGradesRepo;
 import com.LMS.LMS.RepositoryLayer.AssignmentRepo;
 import com.LMS.LMS.RepositoryLayer.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,32 +17,36 @@ import java.util.Optional;
 @Service
 public class AssignmentGradesService {
 
-    @Autowired
-    private AssignmentGradesRepo assignmentGradesRepo;
+    private final AssignmentGradesRepo assignmentGradesRepo;
+    private final AssignmentRepo       assignmentRepo;
+    private final UserRepository       userRepo;
 
-    @Autowired
-    private AssignmentRepo assignmentRepo;
+    public AssignmentGradesService(AssignmentGradesRepo assignmentGradesRepo,
+                                   AssignmentRepo assignmentRepo,
+                                   UserRepository userRepo) {
+        this.assignmentGradesRepo = assignmentGradesRepo;
+        this.assignmentRepo       = assignmentRepo;
+        this.userRepo             = userRepo;
+    }
 
-    @Autowired
-    private UserRepository userRepo;
-
-    
-    private boolean isValidFileType(String fileType) {
+    public boolean isAllowedFileType(String fileType) {
         return fileType != null && (
                 fileType.equals("application/pdf") ||
                         fileType.equals("application/msword") ||
                         fileType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         );
     }
-    public AssignmentGrades submitAssignment(Long assignmentId, Long studentId, MultipartFile file)
-            throws IOException {
+
+    public AssignmentGrades submitAssignment(Long assignmentId,
+                                             Long studentId,
+                                             MultipartFile file) throws IOException {
         Optional<Assignment> assignment = assignmentRepo.findById(assignmentId);
-        Optional<User> student = userRepo.findById(studentId);
+        Optional<User>       student    = userRepo.findById(studentId);
 
         if (assignment.isPresent() && student.isPresent()) {
             // Validate file type
             String fileType = file.getContentType();
-            if (!isValidFileType(fileType)) {
+            if (!isAllowedFileType(fileType)) {
                 throw new IllegalArgumentException("Invalid file type. Only PDF and DOC files are allowed.");
             }
 
@@ -68,29 +71,25 @@ public class AssignmentGradesService {
     public AssignmentGrades gradeSubmission(Long submissionId, String grade, String feedback) {
         Optional<AssignmentGrades> submission = assignmentGradesRepo.findById(submissionId);
         if (submission.isPresent()) {
-            AssignmentGrades gradeSubmission = submission.get();
-            gradeSubmission.setGrade(grade);
-            gradeSubmission.setFeedback(feedback);
-            return assignmentGradesRepo.save(gradeSubmission);
+            AssignmentGrades graded = submission.get();
+            graded.setGrade(grade);
+            graded.setFeedback(feedback);
+            return assignmentGradesRepo.save(graded);
         }
         return null;
     }
 
-
-
     public List<AssignmentGrades> getAssignmentsGrades(long studentId) {
         Optional<User> student = userRepo.findById(studentId);
-        if (student.isPresent()) {
-            return assignmentGradesRepo.findByStudent(student.get());
-        }
-        return null;
+        return student
+                .map(u -> assignmentGradesRepo.findByStudent(u))
+                .orElse(null);
     }
 
     public List<AssignmentGrades> getAssignmentGrade(long assignmentId) {
         Optional<Assignment> assignment = assignmentRepo.findById(assignmentId);
-        if (assignment.isPresent()) {
-            return assignmentGradesRepo.findByAssignment(assignment.get());
-        }
-        return null;
+        return assignment
+                .map(a -> assignmentGradesRepo.findByAssignment(a))
+                .orElse(null);
     }
 }
