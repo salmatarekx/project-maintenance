@@ -18,7 +18,7 @@ public class CourseService {
     private final NotificationRepository notificationRepository;
     private final EmailNotificationService emailNotificationService;
     private final AssignmentRepo assignmentRepo;
-
+    private static final String ACTION_1 ="Course not found with ID: ";
     @Autowired
     public CourseService(@Lazy CourseRepository courseRepository, @Lazy UserRepository userRepository,@Lazy AssignmentRepo assignmentRepo,
                          @Lazy NotificationRepository notificationRepository, @Lazy EmailNotificationService emailNotificationService) {
@@ -57,12 +57,12 @@ public class CourseService {
 
     public Course getCourseById(Long id) {
         return courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ACTION_1 + id));
     }
 
     public Course updateCourse(Long id, CourseDTO courseDTO, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ACTION_1 + id));
 
         // Check if user is a student
         if (currentUser.getRole() == Role.Student) {
@@ -84,7 +84,7 @@ public class CourseService {
 
     public void deleteCourse(Long id, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ACTION_1 + id));
 
         // Check if user is a student
         if (currentUser.getRole() == Role.Student) {
@@ -107,7 +107,7 @@ public class CourseService {
 
     public void enrollStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
+                .orElseThrow(() -> new RuntimeException(ACTION_1 + courseId));
 
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
@@ -147,7 +147,7 @@ public class CourseService {
 
     public List<User> getEnrolledStudents(Long courseId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
+                .orElseThrow(() -> new RuntimeException(ACTION_1 + courseId));
 
         return course.getStudents();
     }

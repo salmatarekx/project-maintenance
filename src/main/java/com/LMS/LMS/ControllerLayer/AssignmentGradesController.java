@@ -20,23 +20,46 @@ public class AssignmentGradesController {
     @Autowired
     private AssignmentGradesService gradesService;
 
-    @PostMapping("/submit")
-    public ResponseEntity<?> submitAssignment(
-            @RequestParam("assignmentId") Long assignmentId,
-            @RequestParam("studentId") Long studentId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            AssignmentGrades submission = gradesService.submitAssignment(assignmentId, studentId, file);
-            return submission != null ?
-                    ResponseEntity.ok(submission) :
-                    ResponseEntity.badRequest().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing file upload: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+   // @PostMapping("/submit")
+    //public ResponseEntity<?> submitAssignment(
+      //      @RequestParam("assignmentId") Long assignmentId,
+        //    @RequestParam("studentId") Long studentId,
+          //  @RequestParam("file") MultipartFile file) {
+       // try {
+         //   AssignmentGrades submission = gradesService.submitAssignment(assignmentId, studentId, file);
+           // return submission != null ?
+             //       ResponseEntity.ok(submission) :
+               //     ResponseEntity.badRequest().build();
+       // } catch (IOException e) {
+         //   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+           //         .body("Error processing file upload: " + e.getMessage());
+        //} catch (IllegalArgumentException e) {
+          //  return ResponseEntity.badRequest().body(e.getMessage());
+        //}
+    //}
+   @PostMapping("/submit")
+   public ResponseEntity<?> submitAssignment(
+           @RequestParam("assignmentId") Long assignmentId,
+           @RequestParam("studentId") Long studentId,
+           @RequestParam("file") MultipartFile file) {
+       try {
+           // Check if the file is missing
+           if (file == null || file.isEmpty()) {
+               return ResponseEntity.badRequest().body("No file uploaded. Please attach a PDF or DOC file.");
+           }
+
+           // Process the file submission
+           AssignmentGrades submission = gradesService.submitAssignment(assignmentId, studentId, file);
+           return submission != null ?
+                   ResponseEntity.ok(submission) :
+                   ResponseEntity.badRequest().build();
+       } catch (IOException e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body("Error processing file upload: " + e.getMessage());
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
+   }
 
     @GetMapping("/download/{submissionId}")
     public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long submissionId) {

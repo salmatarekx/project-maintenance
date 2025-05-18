@@ -51,6 +51,6 @@ public class AssignmentService {
         {
             assignmentRepo.delete(assignment);
         }
-        throw new RuntimeException("Assignment is not Found!");
+        throw new IllegalArgumentException("Assignment is not Found!");
     }
 }

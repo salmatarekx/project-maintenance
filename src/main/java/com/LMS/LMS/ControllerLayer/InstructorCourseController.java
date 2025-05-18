@@ -22,7 +22,7 @@ public class InstructorCourseController {
     private final InstructorCourseService instructorCourseService;
     private  final UserService userService;
     private final CourseService courseService;
-
+    private static final String ACTION_1 ="Course not found with ID: ";
     public InstructorCourseController(InstructorCourseService instructorCourseService, UserService userService,CourseService courseService) {
         this.instructorCourseService = instructorCourseService;
         this.userService = userService;
@@ -77,7 +77,7 @@ public class InstructorCourseController {
         if (course == null || student == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        Map<String, Object> performanceData = performanceTrackingService.getSimplifiedPerformance(student, course);
+
         performanceTrackingService.generateExcelReport(student, course);
         return ResponseEntity.ok("Report generated successfully.");
     }
@@ -102,7 +102,7 @@ public class InstructorCourseController {
 
             // Fetch course from repository
             Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
+                    .orElseThrow(() -> new IllegalArgumentException(ACTION_1 + courseId));
 
             Quiz quiz = new Quiz();
             quiz.setTitle(title);
@@ -160,7 +160,7 @@ public class InstructorCourseController {
 
 
             Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
+                    .orElseThrow(() -> new IllegalArgumentException(ACTION_1 + courseId));
 
             // Create and populate assignment
             Assignment assignment = new Assignment();

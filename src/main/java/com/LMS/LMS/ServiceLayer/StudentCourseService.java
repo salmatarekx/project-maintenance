@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 public class StudentCourseService {
 
     private final CourseService courseService;
-    private final TrackingPerformanceService trackingPerformanceService ; ;
+
     @Autowired
-    public StudentCourseService(@Lazy CourseService courseService,@Lazy TrackingPerformanceService trackingPerformanceService) {
+    public StudentCourseService(@Lazy CourseService courseService) {
         this.courseService = courseService;
-        this.trackingPerformanceService = trackingPerformanceService;
     }
     public void Enroll(Long courseId , Long StudentId){
         courseService.enrollStudent(courseId , StudentId);

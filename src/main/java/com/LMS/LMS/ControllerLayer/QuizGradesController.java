@@ -24,16 +24,26 @@ public class QuizGradesController {
                 ResponseEntity.ok(attempt) :
                 ResponseEntity.badRequest().build();
     }
-
-    @PostMapping("/{attemptId}/submit")
+    @PostMapping("/{quizId}/{studentId}/submit")
     public ResponseEntity<QuizGrades> submitQuiz(
-            @PathVariable Long attemptId,
-            @RequestBody String answers) {
-        QuizGrades submission = gradesService.submitQuizAttempt(attemptId, answers);
+            @PathVariable Long quizId,
+            @PathVariable Long studentId,
+            @RequestBody List<String> answers // Now accepting structured JSON
+    ) {
+        QuizGrades submission = gradesService.submitQuizAttempt(quizId, studentId, answers);
         return submission != null ?
                 ResponseEntity.ok(submission) :
                 ResponseEntity.notFound().build();
     }
+//    @PostMapping("/{attemptId}/submit")
+//    public ResponseEntity<QuizGrades> submitQuiz(
+//            @PathVariable Long attemptId,
+//            @RequestBody String answers) {
+//        QuizGrades submission = gradesService.submitQuizAttempt(attemptId, answers);
+//        return submission != null ?
+//                ResponseEntity.ok(submission) :
+//                ResponseEntity.notFound().build();
+//    }
 
     @PostMapping("/{attemptId}/grade")
     public ResponseEntity<QuizGrades> gradeQuiz(
