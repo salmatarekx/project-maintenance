@@ -74,7 +74,7 @@ public class QuizService {
         }
         return null;
     }
-    public void DeleteQuiz(long id){
+    public void deleteQuiz(long id){
         Quiz quiz = quizRepo.findById(id).orElse(null);
         if (quiz != null)
         {
