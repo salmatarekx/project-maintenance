@@ -30,13 +30,14 @@ public class QuizGradesService {
         Optional<User> student = userRepo.findById(studentId);
 
         if (quiz.isPresent() && student.isPresent()) {
+            // Check if maximum attempts reached
             Long attemptCount = quizGradesRepo.countByQuizAndStudent(quiz.get(), student.get());
             if (attemptCount < quiz.get().getMaxAttempts()) {
                 QuizGrades attempt = new QuizGrades();
                 attempt.setQuiz(quiz.get());
                 attempt.setStudent(student.get());
                 attempt.setStartTime(LocalDateTime.now());
-                attempt.setAttemptNumber(attemptCount + 1L);
+                attempt.setAttemptNumber(attemptCount+ 1L);
                 return quizGradesRepo.save(attempt);
             }
         }
@@ -68,20 +69,18 @@ public class QuizGradesService {
     public List<QuizGrades> getStudentQuizzesGrades(Long studentId) {
         Optional<User> student = userRepo.findById(studentId);
         if (student.isPresent()) {
+            // Assuming you add a findByStudent method to the repository
             return quizGradesRepo.findByStudent(student.get());
         }
         return null;
     }
 
-    public List<QuizGrades> getQuizGrades(Long quizId) {
+    public  List<QuizGrades> getQuizGrades(Long quizId) {
         Optional<Quiz> quiz = quizRepo.findById(quizId);
         if (quiz.isPresent()) {
+            // Assuming you add a findByQuiz method to the repository
             return quizGradesRepo.findByQuiz(quiz.get());
         }
         return null;
-    }
-
-    public List<QuizGrades> getGradesByCourseName(String courseName) {
-        return quizGradesRepo.findByCourseName(courseName);
     }
 }

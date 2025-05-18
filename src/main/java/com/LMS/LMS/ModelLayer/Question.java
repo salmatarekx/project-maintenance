@@ -1,7 +1,7 @@
+// Question.java
 package com.LMS.LMS.ModelLayer;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 public class Question {
@@ -9,31 +9,16 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "quiz_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @NotBlank(message = "Question text cannot be blank")
     private String questionText;
-
-    @NotBlank(message = "Option A cannot be blank")
     private String optionA;
-
-    @NotBlank(message = "Option B cannot be blank")
     private String optionB;
-
-    @NotBlank(message = "Option C cannot be blank")
     private String optionC;
-
-    @NotBlank(message = "Option D cannot be blank")
     private String optionD;
-
-    @NotBlank(message = "Correct answer cannot be blank")
-    @Pattern(regexp = "[ABCD]", message = "Correct answer must be one of: A, B, C, or D")
     private String correctAnswer;
-
-    @NotNull(message = "Points must be provided")
-    @Min(value = 1, message = "Points must be at least 1")
     private Integer points;
 
     // Default constructor
@@ -43,7 +28,7 @@ public class Question {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Quiz getQuiz() { return quiz; }
+//    public Quiz getQuiz() { return quiz; }
     public void setQuiz(Quiz quiz) { this.quiz = quiz; }
 
     public String getQuestionText() { return questionText; }

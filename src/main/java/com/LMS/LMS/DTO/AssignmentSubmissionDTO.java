@@ -1,17 +1,10 @@
 package com.LMS.LMS.DTO;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AssignmentSubmissionDTO {
-
-    @NotNull(message = "Assignment ID is required")
     private Long assignmentId;
-
-    @NotNull(message = "Student ID is required")
     private Long studentId;
-
-    @NotNull(message = "File must be provided")
     private MultipartFile file;
 
     // Getters and setters

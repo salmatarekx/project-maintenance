@@ -1,18 +1,12 @@
 package com.LMS.LMS.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 public class LoginReq {
-
     @JsonProperty("email")
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
     private String email;
 
     @JsonProperty("password")
-    @NotBlank(message = "Password is required")
     private String password;
 
     public LoginReq(@JsonProperty("email") String email, @JsonProperty("password") String password) {

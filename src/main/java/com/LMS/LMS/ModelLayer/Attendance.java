@@ -1,7 +1,5 @@
 package com.LMS.LMS.ModelLayer;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Attendance {
@@ -11,17 +9,12 @@ public class Attendance {
     private Long id;
 
     @ManyToOne
-    @NotNull(message = "Student must be specified")
     private User student;
 
     @ManyToOne
-    @NotNull(message = "Lesson must be specified")
     private Lesson lesson;
 
     private boolean attend;
-
-    public Attendance() {
-    }
 
     public Attendance(Long id, User student, Lesson lesson, boolean attend) {
         this.id = id;
@@ -30,7 +23,8 @@ public class Attendance {
         this.attend = attend;
     }
 
-    // Getters and setters
+    public Attendance() {
+    }
 
     public Long getId() {
         return id;

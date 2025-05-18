@@ -1,37 +1,23 @@
 package com.LMS.LMS.ModelLayer;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
-
-    @NotBlank(message = "Username must not be blank")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    private String UserName;
-
-    @NotBlank(message = "Email must not be blank")
-    @Email(message = "Email should be valid")
+    private Long ID ;
+    private String UserName ;
     @Column(name = "Email")
     private String Email;
 
-    @NotBlank(message = "Password must not be blank")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    private String Password;
 
-    @NotNull(message = "Role is required")
+    private String Password ;
     @Enumerated(EnumType.STRING)
-    private Role role;
 
-    // Constructors
+    private Role role ;
+
     public User(Long ID, String userName, String email, String password, Role role) {
         this.ID = ID;
         UserName = userName;
@@ -41,9 +27,9 @@ public class User {
     }
 
     public User() {
+
     }
 
-    // Getters and Setters
     public Long getID() {
         return ID;
     }
