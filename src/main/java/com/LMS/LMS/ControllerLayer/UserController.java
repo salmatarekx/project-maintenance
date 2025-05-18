@@ -50,6 +50,7 @@ public class UserController {
 
     @GetMapping("/ViewAllProfiles")
     public ResponseEntity<List<User>> viewAllProfiles() {
+
         return ResponseEntity.ok(userService.getAllUsers());
     }
 }
