@@ -37,8 +37,16 @@ public class InstructorCourseController {
     @DeleteMapping("/courses/{CourseId}/students/{StudentId}")
     public ResponseEntity<String> RemoveStudentFromCourse(@PathVariable Long CourseId, @PathVariable Long StudentId) {
         instructorCourseService.removeStudentfromCourse(CourseId, StudentId);
+
+    @DeleteMapping("/courses/{courseId}/students/{studentId}")
+    public ResponseEntity<String> removeStudentFromCourse(
+            @PathVariable("courseId") Long courseId,
+            @PathVariable("studentId") Long studentId
+    ) {
+        instructorCourseService.removeStudentfromCourse(courseId, studentId);
         return ResponseEntity.ok("Student removed successfully from course.");
     }
+
 
     @Autowired
     private TrackingPerformanceService performanceTrackingService;
@@ -50,6 +58,11 @@ public class InstructorCourseController {
         Course course = courseService.getAllCourses().stream()
                 .filter(c -> (c.getId().equals(courseId)))
                 .findFirst().orElse(null);
+
+                .filter(c -> courseId.equals(c.getId()))
+                .findFirst()
+                .orElse(null);
+
 
         User student = userService.getUserById(studentId).orElse(null);
 
@@ -67,6 +80,10 @@ public class InstructorCourseController {
                 .filter(c -> (c.getId().equals(courseId)))
                 .findFirst().orElse(null);
 
+
+                .filter(c -> courseId.equals(c.getId()))
+                .findFirst()
+                .orElse(null);
         User student = userService.getUserById(studentId).orElse(null);
 
         if (course == null || student == null) {
@@ -288,4 +305,24 @@ public class InstructorCourseController {
         quizService.DeleteQuiz(Id);
         return ResponseEntity.ok("Deleted Successfully");
     }
+
+    // Rename path variable, method name, and parameter to lower‑camel‑case:
+    @DeleteMapping("/deleteAssignment/{id}")
+    public ResponseEntity<String> deleteAssignment(
+            @PathVariable("id") long id
+    ) {
+        assignmentService.deleteAssignment(id);
+        return ResponseEntity.ok("Deleted Successfully");
+    }
+
+    @DeleteMapping("/deleteQuiz/{id}")
+    public ResponseEntity<String> deleteQuiz(
+            @PathVariable("id") long id
+    ) {
+        quizService.deleteQuiz(id);
+        return ResponseEntity.ok("Deleted Successfully");
+    }
+
+
+
 }

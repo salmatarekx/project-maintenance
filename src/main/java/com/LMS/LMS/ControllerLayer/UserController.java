@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @Validated
@@ -50,5 +52,11 @@ public class UserController {
             @Valid @RequestBody UserRegistration userRegistration) {
         User updatedUser = userService.UpdateProfile(userId, userRegistration);
         return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/ViewAllProfiles")
+    public ResponseEntity<List<User>> viewAllProfiles() {
+
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
