@@ -24,5 +24,8 @@ public class AdminCourseService {
     public void deleteCourse(Long id, User currentUser) {
         courseService.deleteCourse(id, currentUser);
     }
+    public Course updateCourse(Long id, CourseDTO courseDTO, User currentUser) {
+        return courseService.updateCourse(id, courseDTO, currentUser);
+    }
 
 }

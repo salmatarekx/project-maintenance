@@ -34,7 +34,7 @@ public class AssignmentGradesController {
         if (file.isEmpty()) {
             return ResponseEntity
                     .badRequest()
-                    .body("No file uploaded. Please attach a PDF or DOC file.");
+                    .body("No file uploaded. ");
         }
 
         // type‐check
@@ -57,7 +57,7 @@ public class AssignmentGradesController {
         if ("file".equals(ex.getParameterName())) {
             return ResponseEntity
                     .badRequest()
-                    .body("No file uploaded. Please attach a PDF or DOC file.");
+                    .body("No file uploaded.");
         }
         return ResponseEntity
                 .badRequest()
