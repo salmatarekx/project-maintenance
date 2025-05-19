@@ -1,24 +1,29 @@
 package com.LMS.LMS.ServiceLayer;
 
 import com.LMS.LMS.DTO.CourseDTO;
-import com.LMS.LMS.ModelLayer.*;
+import com.LMS.LMS.ModelLayer.Assignment;
+import com.LMS.LMS.ModelLayer.Course;
+import com.LMS.LMS.ModelLayer.Notification;
+import com.LMS.LMS.ModelLayer.Role;
+import com.LMS.LMS.ModelLayer.User;
 import com.LMS.LMS.RepositoryLayer.*;
-import com.LMS.LMS.RepositoryLayer.AssignmentGradesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 public class CourseService {
-    private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
-    private final NotificationRepository notificationRepository;
+    private final CourseRepository        courseRepository;
+    private final UserRepository          userRepository;
+    private final NotificationRepository  notificationRepository;
     private final EmailNotificationService emailNotificationService;
-    private final AssignmentRepo assignmentRepo;
-    private final AssignmentGradesRepo assignmentGradesRepo;
+    private final AssignmentRepo          assignmentRepo;
+    private final AssignmentGradesRepo    assignmentGradesRepo;
 
     @Autowired
     public CourseService(
@@ -28,24 +33,33 @@ public class CourseService {
             @Lazy NotificationRepository notificationRepository,
             @Lazy EmailNotificationService emailNotificationService,
             @Lazy AssignmentGradesRepo assignmentGradesRepo) {
-        this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
-        this.notificationRepository = notificationRepository;
+        this.courseRepository         = courseRepository;
+        this.userRepository           = userRepository;
+        this.notificationRepository   = notificationRepository;
         this.emailNotificationService = emailNotificationService;
-        this.assignmentRepo = assignmentRepo;
-        this.assignmentGradesRepo = assignmentGradesRepo;
+        this.assignmentRepo           = assignmentRepo;
+        this.assignmentGradesRepo     = assignmentGradesRepo;
     }
 
     public Course createCourse(CourseDTO courseDTO, User currentUser) {
         if (currentUser.getRole() == Role.Student) {
-            throw new RuntimeException("Students do not have permission to create courses");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Students do not have permission to create courses"
+            );
         }
 
         User instructor = userRepository.findById(courseDTO.getInstructor().getID())
-                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Instructor not found"
+                ));
 
         if (instructor.getRole() != Role.Instructor) {
-            throw new RuntimeException("Selected user is not an instructor");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Selected user is not an instructor"
+            );
         }
 
         Course course = new Course();
@@ -63,68 +77,94 @@ public class CourseService {
 
     public Course getCourseById(Long id) {
         return courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Course not found with  this id: " + id
+                ));
     }
 
     public Course updateCourse(Long id, CourseDTO courseDTO, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "The Course not found with this  id: " + id
+                ));
 
         if (currentUser.getRole() == Role.Student) {
-            throw new RuntimeException("Students do not have permission to update courses");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Students do not have permission to update courses"
+            );
         }
-
         if (currentUser.getRole() != Role.Admin &&
                 !course.getInstructor().getID().equals(currentUser.getID())) {
-            throw new RuntimeException("You do not have permission to update this course");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "You do not have permission to update this course"
+            );
         }
 
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
         course.setDuration(courseDTO.getDuration());
-
         return courseRepository.save(course);
     }
 
     @Transactional
     public void deleteCourse(Long id, User currentUser) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Course not found with provided id: " + id
+                ));
 
         if (currentUser.getRole() == Role.Student) {
-            throw new RuntimeException("Students do not have permission to delete courses");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Students do not have permission to delete courses"
+            );
         }
-
         if (currentUser.getRole() != Role.Admin &&
                 !course.getInstructor().getID().equals(currentUser.getID())) {
-            throw new RuntimeException("You do not have permission to delete this course");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "You do not have permission to delete this course"
+            );
         }
 
         if (course.getAssignments() != null) {
-            for (Assignment assignment : course.getAssignments()) {
-                // delete all associated grades first
-                assignmentGradesRepo.deleteAllByAssignment(assignment);
-                // then delete the assignment
-                assignmentRepo.delete(assignment);
+            for (Assignment a : course.getAssignments()) {
+                assignmentGradesRepo.deleteAllByAssignment(a);
+                assignmentRepo.delete(a);
             }
         }
-        // finally delete the course
         courseRepository.deleteById(id);
     }
 
     public void enrollStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Course not found with id: " + courseId
+                ));
 
         User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Student not found with id: " + studentId
+                ));
 
         if (student.getRole() != Role.Student) {
-            throw new RuntimeException("Selected user is not a student");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Selected user is not a student"
+            );
         }
-
         if (course.getStudents().contains(student)) {
-            throw new RuntimeException("Student is already enrolled in this course");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Student is already enrolled in this course"
+            );
         }
 
         course.getStudents().add(student);
@@ -147,10 +187,14 @@ public class CourseService {
         notificationRepository.save(instructorNotification);
     }
 
+
+
     public List<User> getEnrolledStudents(Long courseId) {
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
-
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Course not found with id: " + courseId
+                ));
         return course.getStudents();
     }
 }
